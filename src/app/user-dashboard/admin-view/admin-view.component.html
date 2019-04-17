@@ -1,0 +1,167 @@
+<div class="container">
+
+  <div class="row">
+    <div class="displayBlockMobile" style="position:fixed;width:100%;z-index:1;">
+
+      <div class="col-sm-12 p-0">
+
+        <nav class="navbar navbar-expand-md navbar-fixed navbar-dark bg-dark">
+
+          <a class="navbar-brand text-white">
+            {{userInfo.firstName}} {{userInfo.lastName}}
+            <i class="online" *ngIf="disconnectedSocket == false"></i>
+            <i class="offline" *ngIf="disconnectedSocket == true"></i>
+          </a>
+
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+
+            <span class="navbar-toggler-icon"></span>
+
+          </button>
+
+          <div class="collapse people-list navbar-collapse" id="navbarSupportedContent">
+
+            <ul class="list">
+              <li class="p-2 typeOfEvents">
+                Online Users:
+              </li>
+              <li class="clearfix cursorPointer" [ngClass]="{'activeEvent': user.viewing == true}"
+                (click)="userSelectedByAdmin(user.userId, user.name)" *ngFor="let user of userList">
+                <div class="userPresence" *ngIf="user.userId != userInfo.userId">
+                  {{user.name}}
+                </div>
+              </li>
+
+            </ul>
+
+          </div>
+
+        </nav>
+
+      </div>
+
+    </div>
+
+    <div class="col-12 displayNoneMobile col-sm-4 col-md-4 people-list p-0" id="people-list">
+
+      <div class="p-3 text-white textCapitalize textCenter">
+        {{userInfo.firstName}} {{userInfo.lastName}}
+        <i class="fa fa-circle online" *ngIf="disconnectedSocket == false"></i>
+        <i class="fa fa-circle offline" *ngIf="disconnectedSocket == true"></i>
+        <br>
+        <br>
+
+      </div>
+
+      <ul class="list">
+        <li class="p-2 typeOfEvents">
+          Online Users:
+        </li>
+        <li class="clearfix cursorPointer" [ngClass]="{'activeEvent': user.viewing == true}"
+          (click)="userSelectedByAdmin(user.userId, user.name)" *ngFor="let user of userList">
+          <div class="userPresence" *ngIf="user.userId != userInfo.userId">
+
+            <!-- code to display individual users -->
+
+            {{user.name}}
+
+            <!-- code to display individual users -->
+          </div>
+        </li>
+
+      </ul>
+
+
+    </div>
+
+    <div class="col-12 col-sm-8 col-md-8">
+      <mwl-calendar-week-view [viewDate]="viewDate" [events]="events" [refresh]="refresh"
+        (eventClicked)="handleEvent('Clicked', $event.event)" (eventTimesChanged)="eventTimesChanged($event)">
+      </mwl-calendar-week-view>
+    </div>
+
+
+  </div>
+
+
+  <!-- Everything you see below is just for the demo, you don't need to include it in your app -->
+
+  <br /><br /><br />
+
+  <h3>
+    Edit events
+    <button class="btn btn-primary pull-right" (click)="addEvent()">
+      Add new
+    </button>
+    <div class="clearfix"></div>
+  </h3>
+
+  <div class="table-responsive">
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Primary color</th>
+          <th>Secondary color</th>
+          <th>Starts at</th>
+          <th>Ends at</th>
+          <th>Remove</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let event of events">
+          <td>
+            <input type="text" class="form-control" [(ngModel)]="event.title" (keyup)="refresh.next()" />
+          </td>
+          <td>
+            <input type="color" [(ngModel)]="event.color.primary" (change)="refresh.next()" />
+          </td>
+          <td>
+            <input type="color" [(ngModel)]="event.color.secondary" (change)="refresh.next()" />
+          </td>
+          <td>
+            <input class="form-control" type="text" mwlFlatpickr [(ngModel)]="event.start"
+              (ngModelChange)="refresh.next()" [altInput]="true" [convertModelValue]="true" [enableTime]="true"
+              dateFormat="Y-m-dTH:i" altFormat="F j, Y H:i" placeholder="Not set" />
+          </td>
+          <td>
+            <input class="form-control" type="text" mwlFlatpickr [(ngModel)]="event.end"
+              (ngModelChange)="refresh.next()" [altInput]="true" [convertModelValue]="true" [enableTime]="true"
+              dateFormat="Y-m-dTH:i" altFormat="F j, Y H:i" placeholder="Not set" />
+          </td>
+          <td>
+            <button class="btn btn-danger" (click)="deleteEvent(event)">
+              Delete
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <ng-template #modalContent let-close="close">
+    <div class="modal-header">
+      <h5 class="modal-title">Event action occurred</h5>
+      <button type="button" class="close" (click)="close()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div>
+        Action:
+        <pre>{{ modalData?.action }}</pre>
+      </div>
+      <div>
+        Event:
+        <pre>{{ modalData?.event | json }}</pre>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline-secondary" (click)="close()">
+        OK
+      </button>
+    </div>
+  </ng-template>
+</div>

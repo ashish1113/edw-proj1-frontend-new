@@ -23,9 +23,16 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.css"
+              "src/styles.css",
+              "/home/vivek/edwisor-proj1/meeting-planner-frontend/meeting-planner-frontend/node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "/home/vivek/edwisor-proj1/meeting-planner-frontend/meeting-planner-frontend/node_modules/flatpickr/dist/flatpickr.css",
+              "/home/vivek/edwisor-proj1/meeting-planner-frontend/meeting-planner-frontend/node_modules/angular-calendar/css/angular-calendar.css",
+              "/home/vivek/edwisor-proj1/meeting-planner-frontend/meeting-planner-frontend/node_modules/font-awesome/css/font-awesome.css"
             ],
-            "scripts": []
+            "scripts": [
+              "/home/vivek/edwisor-proj1/meeting-planner-frontend/meeting-planner-frontend/node_modules/jquery/dist/jquery.min.js",
+              "/home/vivek/edwisor-proj1/meeting-planner-frontend/meeting-planner-frontend/node_modules/bootstrap/dist/js/bootstrap.min.js"
+            ]
           },
           "configurations": {
             "production": {
