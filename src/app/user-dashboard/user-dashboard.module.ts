@@ -14,6 +14,9 @@ import { ViewRouteGuardService } from './view-route-gaurd.service';
 import { AdminViewRouteGuardService } from './admin-view-route-gaurd.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SharedModule } from '../shared/shared.module';
+import { CreateEventComponent } from './create-event/create-event.component';
+import { EditEventComponent } from './edit-event/edit-event.component';
+import { DeleteEventComponent } from './delete-event/delete-event.component';
 
 
 @NgModule({
@@ -21,6 +24,7 @@ import { SharedModule } from '../shared/shared.module';
     CommonModule,
     FormsModule,
     SharedModule,
+    
     BrowserAnimationsModule,
     FlatpickrModule.forRoot(),
     ToastrModule.forRoot(),
@@ -30,10 +34,16 @@ import { SharedModule } from '../shared/shared.module';
     }),
     RouterModule.forChild([
       { path:'user-view', component: UserViewComponent,canActivate:[ViewRouteGuardService]},
-      { path:'admin-view', component: AdminViewComponent,canActivate:[AdminViewRouteGuardService]}
+      { path:'admin-view', component: AdminViewComponent,canActivate:[AdminViewRouteGuardService]},
+      { path:'create', component:CreateEventComponent},
+      // { path:'edit/:eventId', component:EditEventComponent},
+      // { path:'delete/:eventId', component:DeleteEventComponent},
+      { path:'edit', component:EditEventComponent},
+      { path:'delete', component:DeleteEventComponent},
+
     ])
   ],
-  declarations: [UserViewComponent, AdminViewComponent],
+  declarations: [UserViewComponent, AdminViewComponent, CreateEventComponent, EditEventComponent, DeleteEventComponent],
   providers: [ViewRouteGuardService,AdminViewRouteGuardService]
 })
 export class UserDashboardModule { }

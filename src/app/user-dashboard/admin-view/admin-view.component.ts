@@ -53,6 +53,9 @@ import { Subscriber } from 'rxjs/Subscriber'
 
 import { ChangeDetectorRef } from '@angular/core'
 
+import * as bootstrap from 'bootstrap';
+//import * as $ from "jquery";
+
 @Component({
   selector: 'app-admin-view',
   templateUrl: './admin-view.component.html',
@@ -131,11 +134,12 @@ export class AdminViewComponent implements OnInit {
   public disconnectedSocket: boolean;
   socketid: any;
   public dayViewToken = false;
-  userSelectedUsername: string;
+  userSelectedUsername: string ;
   userSelectedemail: string;
   userSelectedfullName: string;
   screenWidth: any;
   viewToken: boolean;
+  checkForEventsOnDateList: any = [];
    
 
   constructor(
@@ -149,6 +153,7 @@ export class AdminViewComponent implements OnInit {
   ) { }
   dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
     this.dayViewToken = true;
+    console.log(this.eventlist1);
     setInterval(() => {
       this.screenWidth = screen.width; 
       if(this.dayViewToken ==true && this.screenWidth<=400)
@@ -164,6 +169,10 @@ export class AdminViewComponent implements OnInit {
     if (isSameMonth(date, this.viewDate)) {
       this.viewDate = date;
       this.changeDetectorRef.detectChanges();
+     this.checkForEventsOnDate(this.viewDate);
+     console.log(this.checkForEventsOnDateList);
+
+      $('#exampleModalScrollable').modal('show');
 
       if (
         (isSameDay(this.viewDate, date) && this.activeDayIsOpen === true) ||
@@ -364,7 +373,7 @@ export class AdminViewComponent implements OnInit {
       //if (apiResponse.status === 200){
       console.log(apiResponse);
       this.eventlist1 = []
-      if (apiResponse.data.length > 0) {
+      if (apiResponse.data != null) {
 
         for (let x = 0; x < apiResponse.data.length; x++) {
           let temp = {
@@ -389,9 +398,12 @@ export class AdminViewComponent implements OnInit {
 
 
         }
-        this.events = this.eventlist1;
+        // this.events = this.eventlist1;
+        // this.changeDetectorRef.detectChanges();
         console.log(this.eventlist1)
       }
+      this.events = this.eventlist1;
+      this.changeDetectorRef.detectChanges();
       //}
       // else{
       //   console.log("the data for events are not fetched check")
@@ -444,6 +456,31 @@ export class AdminViewComponent implements OnInit {
     // this.viewToken = true;
     // this.changeDetectorRef.detectChanges();
     location.reload();
+  }
+
+  public checkForEventsOnDate =(date1)=>{
+    console.log("in function")
+    let dateInStr = (new Date (date1)).toLocaleDateString();
+    console.log(dateInStr)
+    for(let x of this.eventlist1)
+    {   
+      console.log("in for")
+      let dateInStr1 = (new Date (x.start)).toLocaleDateString();
+      console.log(dateInStr1)
+      let dateInStr2 = (new Date (x.end)).toLocaleDateString();
+      if((dateInStr1 == dateInStr) || ((new Date (x.start)) < (new Date (date1)) && (new Date (x.end)) > (new Date (date1))) || (dateInStr2 == dateInStr) )
+      {
+        this.checkForEventsOnDateList.push(x)
+        console.log("in if")
+      }
+
+      // if (dateInStr == dateInStr1)
+      // {
+      //   this.checkForEventsOnDateList.push(x)
+      //  console.log("in if")
+      // }
+    }
+    
   }
 
 
