@@ -48,15 +48,17 @@
 
                 </nav>
             </div>
-            <div class="row m-0 " style="background-color: Slategrey;" >
+            <div class="row m-0 " style="background-color: Slategrey;">
                 <div class="col-8 d-flex justify-content-start "
                     style="text-align:center;align-self:center;color:white;text-transform: capitalize;">
 
-                    {{userSelectedfullName}}</div>
+                    {{userSelectedfullName}}
+                </div>
 
                 <div class="col-4 m-0 p-0  d-flex justify-content-end">
                     <button (click)="goToDashboard()" class="btn btn-info "
-                        style="align-self:center;border-radius: 16px; background-color: burlywood">Back</button></div>
+                        style="align-self:center;border-radius: 16px; background-color: burlywood">Back</button>
+                </div>
             </div>
             <div class=" row m-0 d-flex justify-content-center " style="background-color:white;color: black"
                 *ngIf="dayViewToken == false">
@@ -87,9 +89,9 @@
                     </div>
                 </div>
             </div>
-            <div class=" displayLargeWidthMobile row m-0 d-flex justify-content-center " style="background-color:white;color: black"
-                *ngIf="dayViewToken == true">
-                
+            <div class=" displayLargeWidthMobile row m-0 d-flex justify-content-center "
+                style="background-color:white;color: black" *ngIf="dayViewToken == true">
+
                 <div class="col-3">
                     <div class="btn m-0 " style="border-radius: 50%;align-self:center;color:blue;"
                         mwlCalendarPreviousView [view]="view" [(viewDate)]="viewDate"
@@ -141,5 +143,129 @@
                 </div>
             </div>
         </div>
+
+        <!-- Mobile view ends here -->
+
+
+
+        <!-- Non mobile view starts here -->
+
+
+        <div class="col-4 displayNoneMobile col-sm-4 col-md-4 people-list p-0 bg-success" id="people-list">
+            <div class="p-3 text-white textCapitalize textCenter">
+                {{userInfo.firstName}} {{userInfo.lastName}}
+                <i class="fa fa-circle online" *ngIf="disconnectedSocket == false"></i>
+                <i class="fa fa-circle offline" *ngIf="disconnectedSocket == true"></i>
+                <br>
+                <br>
+                <button (click)="logout()" class="btn btn-info customButton">Logout</button>
+            </div>
+
+            <ul class="list">
+                <li class="p-2 typeOfEvents" style="color:white;font-size: 25px;">
+                    <u>UsersList</u>
+                </li>
+                <li class="clearfix cursorPointer" [ngClass]="{'activeEvent': user.viewing == true}"
+                    (click)="userSelectedByAdmin(user.userName, user.email,user.fullName)"
+                    *ngFor="let user of userList">
+                    <div class="userPresence">
+                        <user-details [userFirstName]="user.fullName" [userLastName]="''" [userStatus]="'online'">
+                        </user-details>
+                    </div>
+                </li>
+
+            </ul>
+        </div>
+        <div class="col-8 displayNoneMobile col-sm-8 col-md-8 bg-primary">
+            <div class="row m-0 " style="background-color: Slategrey;">
+                <div class="col-8 d-flex justify-content-start "
+                    style="text-align:center;align-self:center;color:white;text-transform: capitalize;">
+
+                    {{userSelectedfullName}}
+                </div>
+
+                <div class="col-4 m-0 p-0  d-flex justify-content-end">
+                    <button (click)="goToDashboard()" class="btn btn-info "
+                        style="align-self:center;border-radius: 16px; background-color: burlywood">Back</button>
+                </div>
+            </div>
+            <div class="  row m-0 d-flex justify-content-center " style="background-color:white;color: black"
+                *ngIf="dayViewToken == false">
+                <div class="col-3">
+                    <div class="btn m-0 " style="border-radius: 50%;align-self:center;color:blue;"
+                        mwlCalendarPreviousView [view]="view" [(viewDate)]="viewDate"
+                        (viewDateChange)="closeOpenMonthViewDay()">
+                        <span style="font: size 50px;"> &#8678;</span>
+                    </div>
+                </div>
+                <div class="col-6">
+
+
+                    <div class="btn-group d-flex justify-content-center" style="text-align:center;">
+
+                        &nbsp;
+                        <div style="text-align:center;color:black;">
+                            <h2>{{ viewDate | calendarDate:(view + 'ViewTitle'):'en' }}</h2>
+                        </div>
+                        &nbsp;
+
+                    </div>
+                </div>
+                <div class="col-3 d-flex justify-content-center">
+                    <div class="btn  m-0" style="border-radius:50%;align-self:center;color:blue;" mwlCalendarNextView
+                        [view]="view" [(viewDate)]="viewDate" (viewDateChange)="closeOpenMonthViewDay()">
+                        <span style="font: size 50px; text-align: center"> &#8680; </span>
+                    </div>
+                </div>
+            </div>
+            <div class="  row m-0 d-flex justify-content-center " style="background-color:white;color: black"
+                *ngIf="dayViewToken == true">
+
+                <div class="col-3">
+                    <div class="btn m-0 " style="border-radius: 50%;align-self:center;color:blue;"
+                        mwlCalendarPreviousView [view]="view" [(viewDate)]="viewDate"
+                        (viewDateChange)="closeOpenMonthViewDay()">
+                        <span style="font: size 50px;"> &#8678;</span>
+                    </div>
+                </div>
+                <div class="col-6">
+
+
+                    <div class="btn-group d-flex justify-content-center" style="text-align:center;">
+
+                        &nbsp;
+                        <div style="text-align:center;color:black;">
+                            <h2>{{ viewDate | calendarDate:(view + 'ViewTitle'):'en' }}</h2>
+                        </div>
+                        &nbsp;
+
+                    </div>
+                </div>
+                <div class="col-3 d-flex justify-content-center">
+                    <div class="btn  m-0" style="border-radius:50%;align-self:center;color:blue;" mwlCalendarNextView
+                        [view]="view" [(viewDate)]="viewDate" (viewDateChange)="closeOpenMonthViewDay()">
+                        <span style="font: size 50px; text-align: center"> &#8680; </span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 bg-success">
+                <div *ngIf="dayViewToken == false">
+                    <mwl-calendar-month-view [viewDate]="viewDate" [events]="events" [refresh]="refresh"
+                        [activeDayIsOpen]="activeDayIsOpen" (dayClicked)="dayClicked($event.day)"
+                        (eventClicked)="handleEvent('Clicked', $event.event)"
+                        (eventTimesChanged)="eventTimesChanged($event)">
+                    </mwl-calendar-month-view>
+                </div>
+                <div *ngIf="dayViewToken == true">
+                    <mwl-calendar-week-view [viewDate]="viewDate" [events]="events" [refresh]="refresh"
+                        (eventClicked)="handleEvent('Clicked', $event.event)"
+                        (eventTimesChanged)="eventTimesChanged($event)">
+                    </mwl-calendar-week-view>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- non mobile view ends here -->
     </div>
 </div>
