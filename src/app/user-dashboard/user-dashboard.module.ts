@@ -12,12 +12,16 @@ import { UserViewComponent } from './user-view/user-view.component';
 import { AdminViewComponent } from './admin-view/admin-view.component';
 import { ViewRouteGuardService } from './view-route-gaurd.service';
 import { AdminViewRouteGuardService } from './admin-view-route-gaurd.service';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { SharedModule } from '../shared/shared.module';
 
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
+    SharedModule,
+    BrowserAnimationsModule,
     FlatpickrModule.forRoot(),
     ToastrModule.forRoot(),
     CalendarModule.forRoot({

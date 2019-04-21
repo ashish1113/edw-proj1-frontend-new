@@ -9,6 +9,7 @@ import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/toPromise';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { HttpErrorResponse, HttpParams } from "@angular/common/http";
+//import { Socket } from 'net';
 
 
 @Injectable({
@@ -16,7 +17,7 @@ import { HttpErrorResponse, HttpParams } from "@angular/common/http";
 })
 export class SocketService {
 
-  private url = 'http://localhost:3000';
+  private url = 'http://192.168.1.67:3000';
 
   private socket;
 
@@ -35,22 +36,27 @@ export class SocketService {
     return Observable.create((observer) => {
 
       this.socket.on('verifyUser', (data) => {
-
+          Cookie.set("socketId",this.socket.id)
         observer.next(data);
+        console.log(";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;")
 
       }); // end Socket
 
     }); // end Observable
+    
 
   } // end verifyUser
 
   public onlineUserList = () => {
 
     return Observable.create((observer) => {
+      console.log(";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;")
 
       this.socket.on("online-user-list", (userList) => {
 
         observer.next(userList);
+        console.log(userList);
+        console.log(";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;")
 
       }); // end Socket
 
@@ -69,6 +75,8 @@ export class SocketService {
       }); // end Socket
 
     }); // end Observable
+
+    
 
 
 
@@ -106,4 +114,12 @@ export class SocketService {
     return Observable.throw(errorMessage);
 
   }  // END handleError
+
+  public exitSocket = () => {
+
+
+    this.socket.disconnect();
+
+
+  } // end exit socket
 }

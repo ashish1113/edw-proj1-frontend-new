@@ -1,3 +1,11 @@
-<p>
-  user-details works!
-</p>
+<div class="crop" [style.color]="userColor ? userColor :'white'" [style.background]="userBg ? userBg :'blue'">
+  {{firstChar}}
+</div>
+<div class="about" style="color: black" >
+  <div class="name">{{userFirstName}} {{userLastName}}
+    
+  </div>
+  <div class="status">
+    <i class="fa fa-circle" [ngClass]="userStatus"></i>{{userStatus}}
+  </div>
+</div>

@@ -6,7 +6,6 @@ import {
   TemplateRef,
   ElementRef
 } from '@angular/core';
-
 import {
   startOfDay,
   endOfDay,
@@ -28,6 +27,7 @@ import {
   CalendarView
 } from 'angular-calendar';
 
+//colors
 const colors: any = {
   red: {
     primary: '#ad2121',
@@ -42,6 +42,7 @@ const colors: any = {
     secondary: '#FDF1BA'
   }
 }
+
 import { SocketService } from './../../socket.service';
 import { AppService } from './../../app.service';
 
@@ -50,8 +51,10 @@ import { Cookie } from 'ng2-cookies/ng2-cookies';
 import { ToastrManager } from 'ng6-toastr-notifications';
 import { Observable } from 'rxjs/Observable';
 import { Subscriber } from 'rxjs/Subscriber'
+//import {BrowserAnimationsModule} from 
+import {ChangeDetectorRef} from '@angular/core'
 
-import { ChangeDetectorRef } from '@angular/core'
+
 
 @Component({
   selector: 'app-admin-view',
@@ -63,6 +66,7 @@ import { ChangeDetectorRef } from '@angular/core'
   providers: [SocketService]
 })
 export class AdminViewComponent implements OnInit {
+
   @ViewChild('modalContent') modalContent: TemplateRef<any>;
 
   view: CalendarView = CalendarView.Month;
@@ -70,6 +74,10 @@ export class AdminViewComponent implements OnInit {
   CalendarView = CalendarView;
 
   viewDate: Date = new Date();
+  
+
+
+
 
   modalData: {
     action: string;
@@ -94,9 +102,9 @@ export class AdminViewComponent implements OnInit {
 
   refresh: Subject<any> = new Subject();
 
-  eventlist1: any = [];
+  eventlist1: any =[];
 
-  events: CalendarEvent[]
+   events: CalendarEvent[] 
   //  [
   //   {
   //     start: startOfDay(new Date()),
@@ -117,11 +125,17 @@ export class AdminViewComponent implements OnInit {
   //     },
   //     draggable: true
   //   },
-
+    
   // ];
 
   //activeDayIsOpen: boolean = true;//iske bare me dekhna hai
   activeDayIsOpen: boolean
+  
+
+
+
+
+  
 
   public authToken: any;
   public userInfo: any;
@@ -134,9 +148,9 @@ export class AdminViewComponent implements OnInit {
   userSelectedUsername: string;
   userSelectedemail: string;
   userSelectedfullName: string;
-  screenWidth: any;
-  viewToken: boolean;
-   
+  
+  
+
 
   constructor(
     public AppService: AppService,
@@ -146,25 +160,17 @@ export class AdminViewComponent implements OnInit {
     private changeDetectorRef: ChangeDetectorRef,
     private modal: NgbModal
 
-  ) { }
+  ) {
+    
+  }
   dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
-    this.dayViewToken = true;
-    setInterval(() => {
-      this.screenWidth = screen.width; 
-      if(this.dayViewToken ==true && this.screenWidth<=400)
-    {
-      this.view = CalendarView.Day;
-      this.changeDetectorRef.detectChanges();
-    }else{this.view = CalendarView.Week;
-      this.changeDetectorRef.detectChanges();}
-      }, 5);
-    
-    
-     this.changeDetectorRef.detectChanges();
+    this.dayViewToken =true;
+    this.view = CalendarView.Week
+   // this.changeDetectorRef.detectChanges();
     if (isSameMonth(date, this.viewDate)) {
       this.viewDate = date;
       this.changeDetectorRef.detectChanges();
-
+      
       if (
         (isSameDay(this.viewDate, date) && this.activeDayIsOpen === true) ||
         events.length === 0
@@ -172,14 +178,15 @@ export class AdminViewComponent implements OnInit {
         //this.dayViewToken =true;
         //this.activeDayIsOpen = false;
       } else {
-
+        
         this.activeDayIsOpen = true;
       }
       console.log(this.viewDate + "-------------  ");
 
-      console.log(this.dayViewToken);
+      console.log(this.dayViewToken); 
     }
   }
+  
 
   eventTimesChanged({
     event,
@@ -235,6 +242,7 @@ export class AdminViewComponent implements OnInit {
   }
 
   ngOnInit() {
+
     this.authToken = Cookie.get('authtoken');
 
     this.userInfo = this.AppService.getUserInfoFromLocalstorage();
@@ -246,7 +254,6 @@ export class AdminViewComponent implements OnInit {
 
     // if (this.receiverId != null && this.receiverId != undefined && this.receiverId != '') {
     //   this.userSelectedByAdmin(this.receiverId, this.receiverName)
-    //console.log(";;;;;;;" screen.width);
     // }
 
     this.checkStatus();
@@ -256,9 +263,9 @@ export class AdminViewComponent implements OnInit {
     this.getOnlineUserList()
 
     console.log(this.userList);
-    console.log("-------------------------------------")
+  console.log("-------------------------------------")
     console.log(this.dayViewToken);
-    
+
   }
 
   public checkStatus: any = () => {
@@ -286,8 +293,8 @@ export class AdminViewComponent implements OnInit {
         //console.log("data is : ", data);
 
         this.disconnectedSocket = false;
-
-        let data1 = { authToken: this.authToken, userSocketId: this.socketid }
+        
+        let data1 = {authToken:this.authToken,userSocketId:this.socketid}
         this.SocketService.setUser(data1);
         console.log(",,,,,,,,,,,,,,,,")
         console.log(this.authToken)
@@ -318,8 +325,8 @@ export class AdminViewComponent implements OnInit {
       }); // end online-user-list
   }
 
-  public userSelectedByAdmin: any = (userName, email, fullName) => {
-
+  public userSelectedByAdmin: any = (userName, email,fullName) => {
+    
 
     console.log("setting user as active")
 
@@ -335,14 +342,14 @@ export class AdminViewComponent implements OnInit {
 
     Cookie.set('userSelectedUsername', userName);
 
-    Cookie.set('userSelectedemail', email);
-    Cookie.set('userSelectedfullName', fullName)
+    Cookie.set('userSelectedemail',email);
+    Cookie.set('userSelectedfullName',fullName)
 
 
     this.userSelectedUsername = userName;
 
     this.userSelectedemail = email;
-
+    
     this.userSelectedfullName = fullName;
 
     //this.eventlist1=[]
@@ -352,99 +359,97 @@ export class AdminViewComponent implements OnInit {
     //   userId: this.userInfo.userId,
     //   senderId: id
     // }
-    console.log("---------------", this.userSelectedUsername);
-
+    console.log("---------------",this.userSelectedUsername);
+   
     //console.log("---------------",this.userSelectedUsername);
 
-  } // end userBtnClick function
-
-  public getAllEventsOfAUser: any = (email) => {
-    console.log("-----------++++++++++++++++++", email)
-    this.AppService.getSingleUserEvents(email).subscribe((apiResponse) => {
+   } // end userBtnClick function
+   
+   public getAllEventsOfAUser:any = (email) => {
+     console.log("-----------++++++++++++++++++",email)
+     this.AppService.getSingleUserEvents(email).subscribe((apiResponse) => {
       //if (apiResponse.status === 200){
-      console.log(apiResponse);
-      this.eventlist1 = []
-      if (apiResponse.data.length > 0) {
+        console.log(apiResponse);
+        this.eventlist1=[]
+        if(apiResponse.data.length >0)
+        {  
+          
+          for(let x =0 ;x < apiResponse.data.length;x++)
+          {
+            let temp = {
+              start: new Date(apiResponse.data[x].startTime),
+              end: new Date (apiResponse.data[x].endTime),
+              title: apiResponse.data[x].eventTitle,
+              color: colors.red,
+              actions: this.actions,
+              eventId:apiResponse.data[x].eventId
+              // allDay: true,
+              // resizable: {
+              //   beforeStart: true,
+              //   afterEnd: true
+              // },
+              // draggable: true
+            }
+            
+            this.eventlist1.push(temp);
+            
+            //console.log(this.eventlist1)
 
-        for (let x = 0; x < apiResponse.data.length; x++) {
-          let temp = {
-            start: new Date(apiResponse.data[x].startTime),
-            end: new Date(apiResponse.data[x].endTime),
-            title: apiResponse.data[x].eventTitle,
-            color: colors.red,
-            actions: this.actions,
-            eventId: apiResponse.data[x].eventId
-            // allDay: true,
-            // resizable: {
-            //   beforeStart: true,
-            //   afterEnd: true
-            // },
-            // draggable: true
+
+            
           }
-
-          this.eventlist1.push(temp);
-
-          //console.log(this.eventlist1)
-
-
-
+          this.events = this.eventlist1;
+          console.log(this.eventlist1)
         }
-        this.events = this.eventlist1;
-        console.log(this.eventlist1)
-      }
       //}
       // else{
       //   console.log("the data for events are not fetched check")
       // }
+       
+     })
+   }
 
-    })
-  }
+   //logout function
 
- // logout function
+  //  public logout: any = () => {
 
-   public logout: any = () => {
+  //   this.AppService.logout()
+  //     .subscribe((apiResponse) => {
 
-    this.AppService.logout()
-      .subscribe((apiResponse) => {
+  //       if (apiResponse.status === 200) {
+  //         console.log("logout called")
+  //         // Cookie.delete('authtoken');
 
-        if (apiResponse.status === 200) {
-          console.log("logout called")
-          // Cookie.delete('authtoken');
+  //         // Cookie.delete('receiverId');
 
-          // Cookie.delete('receiverId');
+  //         // Cookie.delete('receiverName');
+  //         Cookie.deleteAll();
+  //         this.SocketService.exitSocket()
 
-          // Cookie.delete('receiverName');
-          Cookie.deleteAll();
-          this.SocketService.exitSocket()
+  //         this.router.navigate(['/']);
 
-          this.router.navigate(['/']);
+  //       } else {
+  //         this.toastr.errorToastr(apiResponse.message)
 
-        } else {
-          this.toastr.errorToastr(apiResponse.message)
+  //       } // end condition
 
-        } // end condition
-
-      }, (err) => {
-        this.toastr.errorToastr('some error occured')
+  //     }, (err) => {
+  //       this.toastr.errorToastr('some error occured')
 
 
-      });
+  //     });
 
-  } // end logout
+  // } // end logout
 
   //go-to -dashboard
-  public goToDashboard = () =>{
-    Cookie.delete('userSelectedUsername');
-    Cookie.delete('userSelectedemail');
-    Cookie.delete('userSelectedfullName');
-    // this.changeDetectorRef.detectChanges();
-    // this.viewDate = new Date();
-    // this.dayViewToken =false;
-    // this.view = CalendarView.Month;
-    // this.viewToken = true;
-    // this.changeDetectorRef.detectChanges();
-    location.reload();
-  }
-
+  // public goToDashboard = () =>{
+  //   Cookie.delete('userSelectedUsername');
+  //   Cookie.delete('userSelectedemail');
+  //   Cookie.delete('userSelectedfullName');
+  //   this.viewDate = new Date();
+  //   this.dayViewToken =false;
+  //   this.view = CalendarView.Month;
+  //   this.changeDetectorRef.detectChanges();
+  // }
 
 }

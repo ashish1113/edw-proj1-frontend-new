@@ -1,15 +1,22 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnChanges, Input, EventEmitter, Output, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-user-details',
+  selector: 'user-details',
   templateUrl: './user-details.component.html',
   styleUrls: ['./user-details.component.css']
 })
 export class UserDetailsComponent implements OnInit {
 
-  constructor() { }
+  @Input() userFirstName: string;
+  @Input() userLastName: string;
+  @Input() userStatus: string;
 
-  ngOnInit() {
+  public firstChar: string;
+
+  ngOnInit(): void {
+
+    this.firstChar = this.userFirstName[0];
+
   }
 
 }

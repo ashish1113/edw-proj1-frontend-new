@@ -20,6 +20,7 @@ import { UserModule } from './user/user.module';
 import { LoginComponent } from './user/login/login.component';
 import { UserDashboardModule } from './user-dashboard/user-dashboard.module';
 import { UserViewComponent } from './user-dashboard/user-view/user-view.component';
+import { SharedModule } from './shared/shared.module';
 
 
 
@@ -34,6 +35,7 @@ import { UserViewComponent } from './user-dashboard/user-view/user-view.componen
     BrowserAnimationsModule,
     CommonModule,
     FormsModule,
+    SharedModule,
     UserModule,
     NgbModalModule,
     UserDashboardModule,

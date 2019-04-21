@@ -26,6 +26,13 @@ import {
   CalendarView
 } from 'angular-calendar';
 
+import { SocketService } from './../../socket.service';
+import { AppService } from './../../app.service';
+
+import { Router } from '@angular/router';
+import { Cookie } from 'ng2-cookies/ng2-cookies';
+import { ToastrManager } from 'ng6-toastr-notifications';
+
 const colors: any = {
   red: {
     primary: '#ad2121',
@@ -47,7 +54,7 @@ const colors: any = {
   templateUrl: './user-view.component.html',
   styleUrls: ['./user-view.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-
+  providers: [SocketService],
   animations: [collapseAnimation]
 })
 export class UserViewComponent implements OnInit {
@@ -131,7 +138,20 @@ export class UserViewComponent implements OnInit {
   modal: any;
 
 
-  constructor() {
+  public authToken: any;
+  public userInfo: any;
+  //public receiverId: any;
+  //public receiverName: any;
+  public userList: any = [];
+  public disconnectedSocket: boolean;
+  socketid: any;
+
+  constructor(
+    public AppService: AppService,
+    public SocketService: SocketService,
+    public router: Router,
+    private toastr: ToastrManager,
+  ) {
     console.log(this.viewDate + "-- ");
   }
   dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
@@ -203,6 +223,51 @@ export class UserViewComponent implements OnInit {
 
   ngOnInit() {
 
+    this.authToken = Cookie.get('authtoken');
+
+    this.userInfo = this.AppService.getUserInfoFromLocalstorage();
+    //this.receiverId = Cookie.get('receiverId');
+    this.socketid = Cookie.get('socketId');
+
+    this.checkStatus();
+
+    this.verifyUserConfirmation();
+
+  }
+
+  public checkStatus: any = () => {
+
+    if (Cookie.get('authtoken') === undefined || Cookie.get('authtoken') === '' || Cookie.get('authtoken') === null) {
+
+      this.router.navigate(['/']);
+
+      return false;
+
+    } else {
+
+      return true;
+
+    }
+
+  } // end checkStatus
+
+  public verifyUserConfirmation: any = () => {
+
+    this.SocketService.verifyUser()
+      .subscribe((data) => {
+
+        console.log("verifing user ................")
+        //console.log("data is : ", data);
+
+        this.disconnectedSocket = false;
+        
+        let data1 = {authToken:this.authToken,userSocketId:this.socketid}
+        this.SocketService.setUser(data1);
+        console.log(",,,,,,,,,,,,,,,,")
+        console.log(this.authToken)
+       // this.getOnlineUserList()
+
+      });
   }
 
 }

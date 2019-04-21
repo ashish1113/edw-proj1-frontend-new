@@ -6,6 +6,8 @@
     border-radius: 50%;
     display: inline-block;
   }
+
+  
   
   .offline{
   
@@ -60,15 +62,15 @@
       box-sizing: border-box;
     }
     
-    body {
+   body {
       padding: 2.5em 0;
-      color: white;
+      color:blue;
     }
     
-    .container {
+     .container {
       margin: 0 auto;
       background: #444753;
-      border-radius: 0.3em;
+      /* border-radius: 0.3em; */
     }
     
     .people-list {
@@ -121,7 +123,7 @@
     .people-list .status {
       color: #92959E;
     }
-
+  
     .online,
   .offline,
   .me,
@@ -170,7 +172,7 @@
   .customButton {
     width: 100%;
   }
-
+  
   .blankContent{
     height: 100vh;
     display: flex;
@@ -179,10 +181,10 @@
     font-size: 3rem;
     color: #999;
   }
-
+  
   /* user list items */
-
- .crop {
+  
+  .crop {
     border-radius: 100%;
     line-height: 1em;
     padding: 1em;
@@ -230,3 +232,12 @@
   .name {
     float: left;
   }
+  @media only screen and (max-width:400px) {
+    .displaySmallWidthMobile {
+      display: block;
+  }
+  .displayLargeWidthMobile {
+    display:  none;
+  }
+  }
+

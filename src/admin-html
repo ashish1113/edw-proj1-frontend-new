@@ -1,0 +1,189 @@
+<div class="container ">
+  <div class="row"> 
+
+
+    <!--diplsy mobile  view-->
+     <div class="displayBlockMobile" style="width:100%;z-index:1;"> 
+
+      <div class="col-sm-12"> 
+
+        <nav class="navbar navbar-expand-md navbar-fixed navbar-dark bg-dark">
+
+          <a class="navbar-brand text-white" >
+            {{userInfo.firstName}} {{userInfo.lastName}}
+            <i class="online" *ngIf="disconnectedSocket == false"></i>
+            <i class="offline" *ngIf="disconnectedSocket == true"></i>
+          </a>
+
+
+
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+
+            <span class="navbar-toggler-icon"></span>
+
+          </button>
+
+          <div class="collapse people-list navbar-collapse" id="navbarSupportedContent">
+
+            <br />
+
+            <div>
+              <button (click)="logout()" class="btn btn-info customButton">Logout</button>
+            </div>
+
+            <ul class="list">
+              <li class="p-2 typeOfEvents" style="color:white;font-size: 25px;">
+                <u>UsersList:-(Select a user)</u>
+              </li>
+              <li class="clearfix cursorPointer" [ngClass]="{'activeEvent': user.viewing == true}"
+                (click)="userSelectedByAdmin(user.userName, user.email,user.fullName)" *ngFor="let user of userList">
+                <div class="userPresence">
+                  {{user.fullName}}
+                </div>
+              </li>
+
+            </ul>
+
+          </div>
+
+        </nav>
+
+      </div>
+
+      <!-- <div class="row m-0 " style="background-color: Slategrey;" *ngIf="dayViewToken == false">
+        <div class="col-3 "
+          style="text-align:center;align-self:center;font-size:25px;color:white;text-transform: capitalize;">
+          {{userSelectedfullName}}</div>
+        <div class="col-6 ">
+          &nbsp;
+          <div class="btn-group ">
+            <div class="btn m-0 " style="border-radius: 50%;align-self:center;color:white;"
+              mwlCalendarPreviousView [view]="CalendarView.Month" [(viewDate)]="viewDate"
+              (viewDateChange)="closeOpenMonthViewDay()">
+              <span style="font: size 50px;"> &#8678;</span>
+            </div>
+            &nbsp;
+            <div style="text-align:center;color:white;">
+              <h3>{{ viewDate | calendarDate:(view + 'ViewTitle'):'en' }}</h3>
+            </div>
+            &nbsp;
+            <div class="btn  m-0" style="border-radius:50%;align-self:center;color:white;"
+              mwlCalendarNextView [view]="view" [(viewDate)]="viewDate" (viewDateChange)="closeOpenMonthViewDay()">
+              <span style="font: size 50px; text-align: center"> &#8680; </span>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-sm -2">
+          <button (click)="logout()" class="btn btn-info mt-4 "
+            style="align-self:center;border-radius: 16px; background-color: burlywood">Go-To-Dashboard</button></div>
+      </div> -->
+
+      <!--for week view-->
+<!-- 
+
+      <div class="row p-0 m-0"  *ngIf="dayViewToken == true">
+        <div class="col-3 " style="text-align:center;align-self:center;font-size:25px;color:white;">
+          {{userSelectedfullName}}</div>
+        <div class="col-6 ">
+          &nbsp;
+          <div class="btn-group ">
+            <div class="btn m-0 " style="border-radius: 50%;align-self:center;color:white;font-size:25px"
+              mwlCalendarPreviousView [view]="view" [(viewDate)]="viewDate" (viewDateChange)="closeOpenMonthViewDay()">
+              <span style="font: size 50px;"> &#8678;</span>
+            </div>
+            &nbsp;
+            <div style="text-align:center;color:white;">
+              <h3>{{ viewDate | calendarDate:(view + 'ViewTitle'):'en' }}</h3>
+            </div>
+            &nbsp;
+            <div class="btn  m-0" style="border-radius: 50%;align-self:center;color:white;font-size:25px"
+              mwlCalendarNextView [view]="view" [(viewDate)]="viewDate" (viewDateChange)="closeOpenMonthViewDay()">
+              <span style="font: size 50px; text-align: center"> &#8680; </span>
+            </div>
+          </div>
+        </div>
+        <div class="col-3 "><button (click)="logout()" class="btn btn-info cursorPointer mt-4"
+          style="align-self:center;border-radius: 16px; background-color: burlywood">Go-To-Dashboard</button></div>
+      </div> -->
+      <!-- <div>
+        <div *ngIf="dayViewToken == false">
+          <mwl-calendar-month-view [viewDate]="viewDate" [events]="events" [refresh]="refresh"
+            [activeDayIsOpen]="activeDayIsOpen" (dayClicked)="dayClicked($event.day)"
+            (eventClicked)="handleEvent('Clicked', $event.event)" (eventTimesChanged)="eventTimesChanged($event)">
+          </mwl-calendar-month-view>
+        </div>
+        <div *ngIf="dayViewToken == true">
+          <mwl-calendar-week-view [viewDate]="viewDate" [events]="events" [refresh]="refresh"
+            (eventClicked)="handleEvent('Clicked', $event.event)" (eventTimesChanged)="eventTimesChanged($event)">
+          </mwl-calendar-week-view>
+        </div>
+
+
+      </div> -->
+
+
+    </div>
+
+    <!--from here non mobileview-->
+
+    <!-- <div class="col-12 displayNoneMobile col-sm-4 col-md-4 people-list p-0" id="people-list">
+
+      <div class="p-3 text-white textCapitalize textCenter">
+        {{userInfo.firstName}} {{userInfo.lastName}}
+        <i class="fa fa-circle online" *ngIf="disconnectedSocket == false"></i>
+        <i class="fa fa-circle offline" *ngIf="disconnectedSocket == true"></i>
+        <br>
+        <br>
+        <button (click)="logout()" class="btn btn-info customButton">Logout</button>
+      </div>
+
+      <ul class="list">
+        <li class="p-2 typeOfChats">
+          Online Users:
+        </li>
+        <li class="clearfix cursorPointer" [ngClass]="{'activeChat': user.chatting == true}"
+          *ngFor="let user of userList" (click)="userSelectedByAdmin(user.userName, user.email,user.fullName)">
+          {{user.fullName}}
+
+        </li>
+
+      </ul>
+    </div>
+    <div class="col-8 displayNoneMobile col-sm-8 col-md-8 bg-primary">
+      <mwl-calendar-month-view [viewDate]="viewDate" [events]="events" [refresh]="refresh"
+        [activeDayIsOpen]="activeDayIsOpen" (dayClicked)="dayClicked($event.day)"
+        (eventClicked)="handleEvent('Clicked', $event.event)" (eventTimesChanged)="eventTimesChanged($event)">
+      </mwl-calendar-month-view>
+
+      <mwl-calendar-day-view [viewDate]="viewDate" [events]="events" [refresh]="refresh"
+        (eventClicked)="handleEvent('Clicked', $event.event)" (eventTimesChanged)="eventTimesChanged($event)">
+      </mwl-calendar-day-view>
+    </div> -->
+
+
+  </div>
+</div>
+<!-- <ng-template #modalContent let-close="close">
+  <div class="modal-header">
+    <h5 class="modal-title">Event action occurred</h5>
+    <button type="button" class="close" (click)="close()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div>
+      Action:
+      <pre>{{ modalData?.action }}</pre>
+    </div>
+    <div>
+      Event:
+      <pre>{{ modalData?.event | json }}</pre>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-secondary" (click)="close()">
+      OK
+    </button>
+  </div>
+</ng-template> -->

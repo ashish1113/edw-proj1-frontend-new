@@ -14,7 +14,7 @@ import { HttpErrorResponse, HttpParams } from '@angular/common/http';
 })
 export class AppService {
 
-  private url = 'http://localhost:3000';
+  private url = 'http://192.168.1.67:3000';
 
   constructor( public http: HttpClient) { }
 
@@ -51,6 +51,15 @@ export class AppService {
       .set('authToken', Cookie.get('authtoken'))
     return this.http.post(`${this.url}/api/v1/users/logout`, params);
   }
+
+  public getSingleUserEvents (email) :Observable<any>{
+    return this.http.get(`${this.url}/api/v1/users/${email}/details/allEvents?authToken=${Cookie.get('authtoken')}`)
+    
+    
+  }
+
+  
+  
 
   private  handleError(err: HttpErrorResponse){
 
