@@ -16,8 +16,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SharedModule } from '../shared/shared.module';
 import { CreateEventComponent } from './create-event/create-event.component';
 import { EditEventComponent } from './edit-event/edit-event.component';
-import { DeleteEventComponent } from './delete-event/delete-event.component';
+//import { DeleteEventComponent } from './delete-event/delete-event.component';
 import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
+import { AppService } from '../app.service';
+import { SocketService } from '../socket.service';
 
 
 @NgModule({
@@ -37,15 +39,15 @@ import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.compo
       { path:'user-view', component: UserViewComponent,canActivate:[ViewRouteGuardService]},
       { path:'admin-view', component: AdminViewComponent},
       { path:'admin-dashboard', component: AdminDashboardComponent,canActivate:[AdminViewRouteGuardService]},
-      { path:'create', component:CreateEventComponent},
+      { path:'admin-view/create', component:CreateEventComponent},
       // { path:'edit/:eventId', component:EditEventComponent},
       // { path:'delete/:eventId', component:DeleteEventComponent},
-      { path:'edit', component:EditEventComponent},
-      { path:'delete', component:DeleteEventComponent},
+      { path:'admin-view/edit/:eventId', component:EditEventComponent},
+      
 
     ])
   ],
-  declarations: [UserViewComponent, AdminViewComponent, CreateEventComponent, EditEventComponent, DeleteEventComponent, AdminDashboardComponent],
-  providers: [ViewRouteGuardService,AdminViewRouteGuardService]
+  declarations: [UserViewComponent, AdminViewComponent, CreateEventComponent, EditEventComponent, AdminDashboardComponent],
+  providers: [ViewRouteGuardService,AdminViewRouteGuardService,AppService,SocketService]
 })
 export class UserDashboardModule { }

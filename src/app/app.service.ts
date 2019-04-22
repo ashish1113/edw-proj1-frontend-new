@@ -38,6 +38,23 @@ export class AppService {
 
   }
 
+  public createEvent(eventData): Observable<any> {
+    const params = new HttpParams()
+      .set('email', eventData.email)
+      .set('eventTitle',eventData.eventTitle)
+      .set('mobileNumber', eventData.mobileNumber)
+      .set('startDate', eventData.startDate)
+      .set('endDate', eventData.endDate)
+      .set('eventLocation', eventData.eventLocation)
+      .set('eventDescription', eventData.eventDescription)
+      .set('startHours', eventData.startHours)
+      .set('startMins', eventData.startMins)
+      .set('endHours', eventData.endHours)
+      .set('endMins', eventData.endMins)
+      .set('authToken', eventData.authToken)
+    return this.http.post(`${this.url}/api/v1/users/create/event`, params);
+  }
+
   public signinFunction(data): Observable<any> {
     const params = new HttpParams()
       .set('userName', data.userName)

@@ -317,11 +317,11 @@
                 
                  
                 <!-- <button ng-if="noEvents == true" type="button" disabled class="btn btn-primary" >Delete</button>  -->
-                <a  class="btn btn-primary" [routerLink]="['/delete']"  data-dismiss="modal">Delete</a>
+                <a  class="btn btn-primary"  data-dismiss="modal">Delete</a>
                 <!-- <button ng-if="noEvents == false && selectedEventToken == false" type="button" disabled class="btn btn-primary" >Delete</button> -->
-                <a class="btn btn-primary" [routerLink]="['/create']"  data-dismiss="modal">Create</a>
+                <a class="btn btn-primary" [routerLink]="['/admin-view/create']"  data-dismiss="modal">Create</a>
                 
-                <a  class="btn btn-primary" [routerLink]="['/edit']"  data-dismiss="modal">Edit</a>
+                <a  class="btn btn-primary" [routerLink]="['/admin-view/edit/:eventId']"  data-dismiss="modal">Edit</a>
                 
             </div> 
         </div>

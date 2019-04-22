@@ -87,12 +87,12 @@ export class AdminDashboardComponent implements OnInit {
       .subscribe((data) => {
 
         console.log("verifing user ......aaaaaaaaaaaaaaaaa..........")
-        //console.log("data is : ", data);
+        console.log("verifyuserconfirmation verify user data via observer: ", data);
 
         this.disconnectedSocket = false;
 
         let data1 = { authToken: this.authToken, userSocketId: this.socketid }
-        this.SocketService.setUser(data1);
+        this.SocketService.setUser(data1);//Should comment out
         console.log(",,,,,,,,,,,,,,,,")
         console.log(this.authToken)
         //this.getOnlineUserList()
