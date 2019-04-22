@@ -62,7 +62,7 @@ export class AdminDashboardComponent implements OnInit {
 
     this.verifyUserConfirmation();
 
-    //this.getOnlineUserList()
+    this.getOnlineUserList();
   }
 
   public checkStatus: any = () => {
@@ -86,7 +86,7 @@ export class AdminDashboardComponent implements OnInit {
     this.SocketService.verifyUser()
       .subscribe((data) => {
 
-        console.log("verifing user ................")
+        console.log("verifing user ......aaaaaaaaaaaaaaaaa..........")
         //console.log("data is : ", data);
 
         this.disconnectedSocket = false;
@@ -95,7 +95,7 @@ export class AdminDashboardComponent implements OnInit {
         this.SocketService.setUser(data1);
         console.log(",,,,,,,,,,,,,,,,")
         console.log(this.authToken)
-        this.getOnlineUserList()
+        //this.getOnlineUserList()
 
       });
   }

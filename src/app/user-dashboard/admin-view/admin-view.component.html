@@ -115,13 +115,13 @@
                 <div *ngIf="dayViewToken == false">
                     <mwl-calendar-month-view [viewDate]="viewDate" [events]="events" [refresh]="refresh"
                         [activeDayIsOpen]="activeDayIsOpen" (dayClicked)="dayClicked($event.day)"
-                        (eventClicked)="handleEvent('Clicked', $event.event)"
+                       
                         (eventTimesChanged)="eventTimesChanged($event)">
                     </mwl-calendar-month-view>
                 </div>
                 <div *ngIf="dayViewToken == true ">
                     <mwl-calendar-day-view [viewDate]="viewDate" [events]="events" [refresh]="refresh"
-                        (eventClicked)="handleEvent('Clicked', $event.event)"
+                       
                         (eventTimesChanged)="eventTimesChanged($event)">
                     </mwl-calendar-day-view>
                 </div>
@@ -179,6 +179,11 @@
                 <div class="col-4 m-0 p-0  d-flex justify-content-end">
                     <button (click)="goToDashboard()" class="btn btn-info "
                         style="align-self:center;border-radius: 16px; background-color: burlywood">Back</button>
+
+                        <div class="col-3 m-0 p-0  d-flex justify-content-end">
+                            <button (click)="goToHome()" class="btn btn-info "
+                                style="border-radius: 16px; background-color: burlywood">Home</button>
+                        </div>
                 </div>
             </div>
             <div class="container">
@@ -267,5 +272,58 @@
             </div>
         </div>
 
+    </div>
+</div>
+
+
+
+<div class="modal fade" id="exampleModalScrollable" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalScrollableTitle">Events On {{viewDate}}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" style="background-color: Slategrey" >
+                <ul class="list" *ngIf="noEvents == false">
+                    <li class="p-2 typeOfEvents" style="color:white;font-size: 25px;">
+                        <u>EventsList</u>
+                    </li>
+                    <li class="clearfix cursorPointer" 
+                    (click)="eventSelectedByAdmin(event.eventId)"
+                        *ngFor="let event of checkForEventsOnDateList">
+                        <div class="userPresence" style="border-style: ridge;">
+                            <ul style="list-style-type: square;">
+                                <li>
+                                        {{event.title}} ---- {{event.eventId}}
+
+                                </li>
+                            </ul>
+                            
+                        </div>
+                        
+                    </li>
+
+                </ul>
+                <p *ngIf="noEvents == true"> no events</p>
+
+            </div>
+
+             
+            <div class="modal-footer">
+                
+                 
+                <!-- <button ng-if="noEvents == true" type="button" disabled class="btn btn-primary" >Delete</button>  -->
+                <a  class="btn btn-primary" [routerLink]="['/delete']"  data-dismiss="modal">Delete</a>
+                <!-- <button ng-if="noEvents == false && selectedEventToken == false" type="button" disabled class="btn btn-primary" >Delete</button> -->
+                <a class="btn btn-primary" [routerLink]="['/create']"  data-dismiss="modal">Create</a>
+                
+                <a  class="btn btn-primary" [routerLink]="['/edit']"  data-dismiss="modal">Edit</a>
+                
+            </div> 
+        </div>
     </div>
 </div>

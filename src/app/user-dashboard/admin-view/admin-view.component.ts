@@ -1,5 +1,6 @@
 import {
   Component,
+  
   OnInit,
   ChangeDetectionStrategy,
   ViewChild,
@@ -64,7 +65,7 @@ import * as bootstrap from 'bootstrap';
   changeDetection: ChangeDetectionStrategy.OnPush,
 
   animations: [collapseAnimation],
-  providers: [SocketService]
+  providers: [SocketService,AppService]
 })
 export class AdminViewComponent implements OnInit,OnDestroy {
   @ViewChild('modalContent') modalContent: TemplateRef<any>;
@@ -75,26 +76,26 @@ export class AdminViewComponent implements OnInit,OnDestroy {
 
   viewDate: Date = new Date();
 
-  modalData: {
-    action: string;
-    event: CalendarEvent;
-  };
+  // modalData: {
+  //   action: string;
+  //   event: CalendarEvent;
+  // };
 
-  actions: CalendarEventAction[] = [
-    {
-      label: '<i class="fa fa-fw fa-pencil"></i>',
-      onClick: ({ event }: { event: CalendarEvent }): void => {
-        this.handleEvent('Edited', event);
-      }
-    },
-    {
-      label: '<i class="fa fa-fw fa-times"></i>',
-      onClick: ({ event }: { event: CalendarEvent }): void => {
-        this.events = this.events.filter(iEvent => iEvent !== event);
-        this.handleEvent('Deleted', event);
-      }
-    }
-  ];
+  // actions: CalendarEventAction[] = [
+  //   {
+  //     label: '<i class="fa fa-fw fa-pencil"></i>',
+  //     onClick: ({ event }: { event: CalendarEvent }): void => {
+  //       this.handleEvent('Edited', event);
+  //     }
+  //   },
+  //   {
+  //     label: '<i class="fa fa-fw fa-times"></i>',
+  //     onClick: ({ event }: { event: CalendarEvent }): void => {
+  //       this.events = this.events.filter(iEvent => iEvent !== event);
+  //       this.handleEvent('Deleted', event);
+  //     }
+  //   }
+  // ];
 
   refresh: Subject<any> = new Subject();
 
@@ -141,8 +142,9 @@ export class AdminViewComponent implements OnInit,OnDestroy {
   screenWidth: any;
   viewToken: boolean;
   checkForEventsOnDateList: any = [];
-  noEvents: boolean = true;
+  noEvents: boolean =true;
   tokenForDayView: boolean;
+  selectedEventToken: boolean = false;
    
 
   constructor(
@@ -165,9 +167,12 @@ export class AdminViewComponent implements OnInit,OnDestroy {
      this.changeDetectorRef.detectChanges();
     if (isSameMonth(date, this.viewDate)) {
       this.viewDate = date;
-      this.changeDetectorRef.detectChanges();
+      
      this.checkForEventsOnDate(this.viewDate);
+     this.changeDetectorRef.detectChanges();
+     console.log("-------------------------------")
      console.log(this.checkForEventsOnDateList);
+     console.log(this.noEvents)
 
       $('#exampleModalScrollable').modal('show');
 
@@ -187,49 +192,49 @@ export class AdminViewComponent implements OnInit,OnDestroy {
     }
   }
 
-  eventTimesChanged({
-    event,
-    newStart,
-    newEnd
-  }: CalendarEventTimesChangedEvent): void {
-    this.events = this.events.map(iEvent => {
-      if (iEvent === event) {
-        return {
-          ...event,
-          start: newStart,
-          end: newEnd
-        };
-      }
-      return iEvent;
-    });
-    this.handleEvent('Dropped or resized', event);
-  }
+  // eventTimesChanged({
+  //   event,
+  //   newStart,
+  //   newEnd
+  // }: CalendarEventTimesChangedEvent): void {
+  //   this.events = this.events.map(iEvent => {
+  //     if (iEvent === event) {
+  //       return {
+  //         ...event,
+  //         start: newStart,
+  //         end: newEnd
+  //       };
+  //     }
+  //     return iEvent;
+  //   });
+  //   this.handleEvent('Dropped or resized', event);
+  // }
 
-  handleEvent(action: string, event: CalendarEvent): void {
-    this.modalData = { event, action };
-    this.modal.open(this.modalContent, { size: 'lg' });
-  }
+  // handleEvent(action: string, event: CalendarEvent): void {
+  //   this.modalData = { event, action };
+  //   this.modal.open(this.modalContent, { size: 'lg' });
+  // }
 
-  addEvent(): void {
-    this.events = [
-      ...this.events,
-      {
-        title: 'New event',
-        start: startOfDay(new Date()),
-        end: endOfDay(new Date()),
-        color: colors.red,
-        draggable: true,
-        resizable: {
-          beforeStart: true,
-          afterEnd: true
-        }
-      }
-    ];
-  }
+  // addEvent(): void {
+  //   this.events = [
+  //     ...this.events,
+  //     {
+  //       title: 'New event',
+  //       start: startOfDay(new Date()),
+  //       end: endOfDay(new Date()),
+  //       color: colors.red,
+  //       draggable: true,
+  //       resizable: {
+  //         beforeStart: true,
+  //         afterEnd: true
+  //       }
+  //     }
+  //   ];
+  // }
 
-  deleteEvent(eventToDelete: CalendarEvent) {
-    this.events = this.events.filter(event => event !== eventToDelete);
-  }
+  // deleteEvent(eventToDelete: CalendarEvent) {
+  //   this.events = this.events.filter(event => event !== eventToDelete);
+  // }
 
   setView(view: CalendarView) {
     this.view = view;
@@ -259,9 +264,9 @@ export class AdminViewComponent implements OnInit,OnDestroy {
 
     // this.verifyUserConfirmation();
 
-    // this.getOnlineUserList()
+     this.getOnlineUserList();
 
-    this.getAllEventsOfAUser(this.userSelectedUsername);
+   this.getAllEventsOfAUser(this.userSelectedUsername);
 
     console.log(this.userList);
     console.log("-------------------------------------")
@@ -285,86 +290,49 @@ export class AdminViewComponent implements OnInit,OnDestroy {
 
   } // end checkStatus
 
-  // public verifyUserConfirmation: any = () => {
+   public verifyUserConfirmation: any = () => {
 
-  //   this.SocketService.verifyUser()
-  //     .subscribe((data) => {
+    this.SocketService.verifyUser()
+      .subscribe((data) => {
 
-  //       console.log("verifing user ................")
-  //       //console.log("data is : ", data);
+        console.log("verifing user ................")
+        //console.log("data is : ", data);
 
-  //       this.disconnectedSocket = false;
+        this.disconnectedSocket = false;
 
-  //       let data1 = { authToken: this.authToken, userSocketId: this.socketid }
-  //       this.SocketService.setUser(data1);
-  //       console.log(",,,,,,,,,,,,,,,,")
-  //       console.log(this.authToken)
-  //       this.getOnlineUserList()
+        let data1 = { authToken: this.authToken, userSocketId: this.socketid }
+        this.SocketService.setUser(data1);
+        console.log(",,,,,,,,,,,,,,,,")
+        console.log(this.authToken)
+        this.getOnlineUserList()
 
-  //     });
-  // }
+      });
+  }
 
-  // public getOnlineUserList: any = () => {
-  //   console.log('##########################################')
+  public getOnlineUserList: any = () => {
+    console.log('##########################################')
 
-  //   this.SocketService.onlineUserList()
-  //     .subscribe((userList) => {
+    this.SocketService.onlineUserList()
+      .subscribe((userList) => {
 
-  //       this.userList = [];
+        this.userList = [];
 
-  //       for (let x of userList) {
-  //         console.log(x)
+        for (let x of userList) {
+          console.log("online user in list: ",x)
 
-  //         let temp = x
+          let temp = x;
 
-  //         this.userList.push(temp);
+          this.userList.push(temp);
 
-  //       }
+        }
 
-  //       console.log(this.userList);
+        console.log(this.userList);
 
-  //     }); // end online-user-list
-  // }
+      }); // end online-user-list
+  }
 
-  // public userSelectedByAdmin: any = (userName, email, fullName) => {
+  
 
-
-  //   console.log("setting user as active")
-
-  //   // setting that user to chatting true   
-  //   this.userList.map((user) => {
-  //     if (user.userName == userName) {
-  //       user.viewing = true;
-  //     }
-  //     else {
-  //       user.viewing = false;
-  //     }
-  //   })
-
-  //   Cookie.set('userSelectedUsername', userName);
-
-  //   Cookie.set('userSelectedemail', email);
-  //   Cookie.set('userSelectedfullName', fullName)
-
-
-  //   this.userSelectedUsername = userName;
-
-  //   this.userSelectedemail = email;
-
-  //   this.userSelectedfullName = fullName;
-
-  //   //this.eventlist1=[]
-  //   this.getAllEventsOfAUser(this.userSelectedUsername);
-
-  //   // let eventDetails = {
-  //   //   userId: this.userInfo.userId,
-  //   //   senderId: id
-  //   // }
-  //   console.log("---------------", this.userSelectedUsername);
-
-  //   //console.log("---------------",this.userSelectedUsername);
-
-  // } // end userBtnClick function
 
   public getAllEventsOfAUser: any = (email) => {
     console.log("-----------++++++++++++++++++", email)
@@ -380,7 +348,7 @@ export class AdminViewComponent implements OnInit,OnDestroy {
             end: new Date(apiResponse.data[x].endTime),
             title: apiResponse.data[x].eventTitle,
             color: colors.red,
-            actions: this.actions,
+            // actions: this.actions,
             eventId: apiResponse.data[x].eventId
             // allDay: true,
             // resizable: {
@@ -410,6 +378,29 @@ export class AdminViewComponent implements OnInit,OnDestroy {
 
     })
   }
+  public eventSelectedByAdmin: any = (eventId) => {
+    // this.selectedEventToken = true;
+    // this.changeDetectorRef.detectChanges();
+
+    
+
+    console.log("setting user as active")
+
+    // setting that user to chatting true   
+    this.checkForEventsOnDateList.map((event) => {
+      if (event.eventId == eventId) {
+        Cookie.set("eventSelected",eventId)
+       
+
+      }
+      else {
+        
+      }
+    })
+   console.log(Cookie.get("eventSelected"))
+   console.log(this.selectedEventToken)
+  } // end userBtnClick function
+  
 
  // logout function
 
@@ -443,7 +434,7 @@ export class AdminViewComponent implements OnInit,OnDestroy {
 
   } // end logout
 
-  //go-to -dashboard
+  //go-to -calendar
   public goToDashboard = () =>{
     // Cookie.delete('userSelectedUsername');
     // Cookie.delete('userSelectedemail');
@@ -458,7 +449,17 @@ export class AdminViewComponent implements OnInit,OnDestroy {
   }
   public goToHome = () =>{
     this.router.navigate(['/admin-dashboard']);
+
+
   }
+  public goToEdit = () =>{
+
+    this.router.navigate(['/edit']);
+    //this.changeDetectorRef.detectChanges();
+
+
+  }
+  
 
   public checkForEventsOnDate =(date1)=>{
     console.log("in function")
@@ -472,6 +473,7 @@ export class AdminViewComponent implements OnInit,OnDestroy {
       let dateInStr2 = (new Date (x.end)).toLocaleDateString();
       if((dateInStr1 == dateInStr) || ((new Date (x.start)) < (new Date (date1)) && (new Date (x.end)) > (new Date (date1))) || (dateInStr2 == dateInStr) )
       {
+        console.log("in if")
         this.checkForEventsOnDateList.push(x)
        // this.noEvents = true;
         // console.log("in if")
@@ -490,6 +492,9 @@ export class AdminViewComponent implements OnInit,OnDestroy {
       // }
     }
 
+    console.log("checkforeventondatelist")
+    console.log(this.checkForEventsOnDateList)
+
     if(this.checkForEventsOnDateList.length > 0)
     {
        this.noEvents = false;
@@ -497,9 +502,11 @@ export class AdminViewComponent implements OnInit,OnDestroy {
     else{
        this.noEvents = true;
     }
+
+    console.log(this.noEvents)
     
   }
-
+   
   //  public timedFunction = () =>
   //  {
   //   this.screenWidth = screen.width; 
