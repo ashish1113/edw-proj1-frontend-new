@@ -4,7 +4,8 @@ import {
   ChangeDetectionStrategy,
   ViewChild,
   TemplateRef,
-  ElementRef
+  ElementRef,
+  OnDestroy
 } from '@angular/core';
 
 import {
@@ -60,12 +61,12 @@ import * as bootstrap from 'bootstrap';
   selector: 'app-admin-view',
   templateUrl: './admin-view.component.html',
   styleUrls: ['./admin-view.component.css'],
-  //changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 
   animations: [collapseAnimation],
   providers: [SocketService]
 })
-export class AdminViewComponent implements OnInit {
+export class AdminViewComponent implements OnInit,OnDestroy {
   @ViewChild('modalContent') modalContent: TemplateRef<any>;
 
   view: CalendarView = CalendarView.Month;
@@ -140,6 +141,8 @@ export class AdminViewComponent implements OnInit {
   screenWidth: any;
   viewToken: boolean;
   checkForEventsOnDateList: any = [];
+  noEvents: boolean = true;
+  tokenForDayView: boolean;
    
 
   constructor(
@@ -153,16 +156,10 @@ export class AdminViewComponent implements OnInit {
   ) { }
   dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
     this.dayViewToken = true;
+    this.view = CalendarView.Day;
     console.log(this.eventlist1);
-    setInterval(() => {
-      this.screenWidth = screen.width; 
-      if(this.dayViewToken ==true && this.screenWidth<=400)
-    {
-      this.view = CalendarView.Day;
-      this.changeDetectorRef.detectChanges();
-    }else{this.view = CalendarView.Week;
-      this.changeDetectorRef.detectChanges();}
-      }, 5);
+    //public Cycle = setInterval(this.timedFunction, 5);
+    //setInterval(this.timedFunction, 5);
     
     
      this.changeDetectorRef.detectChanges();
@@ -258,11 +255,13 @@ export class AdminViewComponent implements OnInit {
     //console.log(";;;;;;;" screen.width);
     // }
 
-    this.checkStatus();
+     //this.checkStatus();
 
-    this.verifyUserConfirmation();
+    // this.verifyUserConfirmation();
 
-    this.getOnlineUserList()
+    // this.getOnlineUserList()
+
+    this.getAllEventsOfAUser(this.userSelectedUsername);
 
     console.log(this.userList);
     console.log("-------------------------------------")
@@ -286,86 +285,86 @@ export class AdminViewComponent implements OnInit {
 
   } // end checkStatus
 
-  public verifyUserConfirmation: any = () => {
+  // public verifyUserConfirmation: any = () => {
 
-    this.SocketService.verifyUser()
-      .subscribe((data) => {
+  //   this.SocketService.verifyUser()
+  //     .subscribe((data) => {
 
-        console.log("verifing user ................")
-        //console.log("data is : ", data);
+  //       console.log("verifing user ................")
+  //       //console.log("data is : ", data);
 
-        this.disconnectedSocket = false;
+  //       this.disconnectedSocket = false;
 
-        let data1 = { authToken: this.authToken, userSocketId: this.socketid }
-        this.SocketService.setUser(data1);
-        console.log(",,,,,,,,,,,,,,,,")
-        console.log(this.authToken)
-        this.getOnlineUserList()
+  //       let data1 = { authToken: this.authToken, userSocketId: this.socketid }
+  //       this.SocketService.setUser(data1);
+  //       console.log(",,,,,,,,,,,,,,,,")
+  //       console.log(this.authToken)
+  //       this.getOnlineUserList()
 
-      });
-  }
+  //     });
+  // }
 
-  public getOnlineUserList: any = () => {
-    console.log('##########################################')
+  // public getOnlineUserList: any = () => {
+  //   console.log('##########################################')
 
-    this.SocketService.onlineUserList()
-      .subscribe((userList) => {
+  //   this.SocketService.onlineUserList()
+  //     .subscribe((userList) => {
 
-        this.userList = [];
+  //       this.userList = [];
 
-        for (let x of userList) {
-          console.log(x)
+  //       for (let x of userList) {
+  //         console.log(x)
 
-          let temp = x
+  //         let temp = x
 
-          this.userList.push(temp);
+  //         this.userList.push(temp);
 
-        }
+  //       }
 
-        console.log(this.userList);
+  //       console.log(this.userList);
 
-      }); // end online-user-list
-  }
+  //     }); // end online-user-list
+  // }
 
-  public userSelectedByAdmin: any = (userName, email, fullName) => {
-
-
-    console.log("setting user as active")
-
-    // setting that user to chatting true   
-    this.userList.map((user) => {
-      if (user.userName == userName) {
-        user.viewing = true;
-      }
-      else {
-        user.viewing = false;
-      }
-    })
-
-    Cookie.set('userSelectedUsername', userName);
-
-    Cookie.set('userSelectedemail', email);
-    Cookie.set('userSelectedfullName', fullName)
+  // public userSelectedByAdmin: any = (userName, email, fullName) => {
 
 
-    this.userSelectedUsername = userName;
+  //   console.log("setting user as active")
 
-    this.userSelectedemail = email;
+  //   // setting that user to chatting true   
+  //   this.userList.map((user) => {
+  //     if (user.userName == userName) {
+  //       user.viewing = true;
+  //     }
+  //     else {
+  //       user.viewing = false;
+  //     }
+  //   })
 
-    this.userSelectedfullName = fullName;
+  //   Cookie.set('userSelectedUsername', userName);
 
-    //this.eventlist1=[]
-    this.getAllEventsOfAUser(this.userSelectedUsername);
+  //   Cookie.set('userSelectedemail', email);
+  //   Cookie.set('userSelectedfullName', fullName)
 
-    // let eventDetails = {
-    //   userId: this.userInfo.userId,
-    //   senderId: id
-    // }
-    console.log("---------------", this.userSelectedUsername);
 
-    //console.log("---------------",this.userSelectedUsername);
+  //   this.userSelectedUsername = userName;
 
-  } // end userBtnClick function
+  //   this.userSelectedemail = email;
+
+  //   this.userSelectedfullName = fullName;
+
+  //   //this.eventlist1=[]
+  //   this.getAllEventsOfAUser(this.userSelectedUsername);
+
+  //   // let eventDetails = {
+  //   //   userId: this.userInfo.userId,
+  //   //   senderId: id
+  //   // }
+  //   console.log("---------------", this.userSelectedUsername);
+
+  //   //console.log("---------------",this.userSelectedUsername);
+
+  // } // end userBtnClick function
 
   public getAllEventsOfAUser: any = (email) => {
     console.log("-----------++++++++++++++++++", email)
@@ -446,9 +445,9 @@ export class AdminViewComponent implements OnInit {
 
   //go-to -dashboard
   public goToDashboard = () =>{
-    Cookie.delete('userSelectedUsername');
-    Cookie.delete('userSelectedemail');
-    Cookie.delete('userSelectedfullName');
+    // Cookie.delete('userSelectedUsername');
+    // Cookie.delete('userSelectedemail');
+    // Cookie.delete('userSelectedfullName');
     // this.changeDetectorRef.detectChanges();
     // this.viewDate = new Date();
     // this.dayViewToken =false;
@@ -456,6 +455,9 @@ export class AdminViewComponent implements OnInit {
     // this.viewToken = true;
     // this.changeDetectorRef.detectChanges();
     location.reload();
+  }
+  public goToHome = () =>{
+    this.router.navigate(['/admin-dashboard']);
   }
 
   public checkForEventsOnDate =(date1)=>{
@@ -471,8 +473,15 @@ export class AdminViewComponent implements OnInit {
       if((dateInStr1 == dateInStr) || ((new Date (x.start)) < (new Date (date1)) && (new Date (x.end)) > (new Date (date1))) || (dateInStr2 == dateInStr) )
       {
         this.checkForEventsOnDateList.push(x)
-        console.log("in if")
+       // this.noEvents = true;
+        // console.log("in if")
+        // console.log(this.noEvents)
       }
+      // else{
+      //   this.noEvents = false;
+      //   console.log("false")
+
+      // }
 
       // if (dateInStr == dateInStr1)
       // {
@@ -480,7 +489,38 @@ export class AdminViewComponent implements OnInit {
       //  console.log("in if")
       // }
     }
+
+    if(this.checkForEventsOnDateList.length > 0)
+    {
+       this.noEvents = false;
+    }
+    else{
+       this.noEvents = true;
+    }
     
+  }
+
+  //  public timedFunction = () =>
+  //  {
+  //   this.screenWidth = screen.width; 
+  //   if(this.dayViewToken ==true && this.screenWidth<=400)
+  // { this.tokenForDayView = true;
+  //   this.view = CalendarView.Day;
+  //   this.changeDetectorRef.detectChanges();
+  // }else{this.view = CalendarView.Week;
+  //   this.tokenForDayView = false;
+  //   this.changeDetectorRef.detectChanges();
+  // }
+  //   }
+
+  ngOnDestroy(){
+
+    //clearInterval(.Cycle);
+
+    // Cookie.delete('userSelectedUsername');
+    // Cookie.delete('userSelectedemail');
+    // Cookie.delete('userSelectedfullName');
+
   }
 
 

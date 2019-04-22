@@ -17,6 +17,7 @@ import { SharedModule } from '../shared/shared.module';
 import { CreateEventComponent } from './create-event/create-event.component';
 import { EditEventComponent } from './edit-event/edit-event.component';
 import { DeleteEventComponent } from './delete-event/delete-event.component';
+import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
 
 
 @NgModule({
@@ -34,7 +35,8 @@ import { DeleteEventComponent } from './delete-event/delete-event.component';
     }),
     RouterModule.forChild([
       { path:'user-view', component: UserViewComponent,canActivate:[ViewRouteGuardService]},
-      { path:'admin-view', component: AdminViewComponent,canActivate:[AdminViewRouteGuardService]},
+      { path:'admin-view', component: AdminViewComponent},
+      { path:'admin-dashboard', component: AdminDashboardComponent,canActivate:[AdminViewRouteGuardService]},
       { path:'create', component:CreateEventComponent},
       // { path:'edit/:eventId', component:EditEventComponent},
       // { path:'delete/:eventId', component:DeleteEventComponent},
@@ -43,7 +45,7 @@ import { DeleteEventComponent } from './delete-event/delete-event.component';
 
     ])
   ],
-  declarations: [UserViewComponent, AdminViewComponent, CreateEventComponent, EditEventComponent, DeleteEventComponent],
+  declarations: [UserViewComponent, AdminViewComponent, CreateEventComponent, EditEventComponent, DeleteEventComponent, AdminDashboardComponent],
   providers: [ViewRouteGuardService,AdminViewRouteGuardService]
 })
 export class UserDashboardModule { }

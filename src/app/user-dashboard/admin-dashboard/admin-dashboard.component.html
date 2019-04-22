@@ -1,0 +1,61 @@
+<div class=" container-fluid bg-dark">
+  <div class="row">
+
+    <div class="col-sm-12">
+      <nav class="navbar navbar-expand-md navbar-fixed navbar-dark justify-content-between">
+
+        <a class="navbar-brand text-white">
+          {{userInfo.firstName}} {{userInfo.lastName}}
+          <i class="online" *ngIf="disconnectedSocket == false"></i>
+          <i class="offline" *ngIf="disconnectedSocket == true"></i>
+        </a>
+
+
+
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+
+          <span class="navbar-toggler-icon"></span>
+
+        </button>
+
+        <div class="collapse people-list navbar-collapse" id="navbarSupportedContent">
+
+          <br />
+
+          <div class=".float-left bg-danger">
+            <button (click)="logout()" class="btn btn-info customButton ">Logout</button>
+          </div>
+
+
+
+        </div>
+
+      </nav>
+      <div class="d-flex justify-content-center"style="background-color:grey">
+        <ul class="list">
+          <li class="p-0 typeOfEvents" style="color:white;font-size: 50px;">
+            <u>UsersList</u>
+          </li>
+          <li class="clearfix cursorPointer mt-3" [ngClass]="{'activeEvent': user.viewing == true}"
+            (click)="userSelectedByAdmin(user.userName, user.email,user.fullName)" *ngFor="let user of userList">
+            <div class="userPresence" style="border-style: ridge;border-color: blanchedalmond">
+              <!-- <user-details [userFirstName]="user.fullName" [userLastName]="''" [userStatus]="'online'">
+              </user-details> -->
+
+              <ul style="list-style-type: square;">
+                  <li >
+                      {{user.fullName}}
+
+                  </li>
+              </ul>
+              
+            </div>
+          </li>
+
+        </ul>
+      </div>
+    </div>
+
+  </div>
+</div>

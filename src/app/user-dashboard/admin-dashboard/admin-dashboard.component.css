@@ -63,15 +63,13 @@
     }
     
    body {
-      padding: 0;
-     
-      background: black;
-      overflow: hidden;
+      padding: 2.5em 0;
+      color:blue;
     }
     
      .container {
       margin: 0 auto;
-      background: black;
+      background: #444753;
       /* border-radius: 0.3em; */
     }
     
@@ -234,12 +232,12 @@
   .name {
     float: left;
   }
-  @media only screen and (max-width:400px) {
+  /* @media only screen and (max-width:400px) {
     .displaySmallWidthMobile {
       display: block;
   }
   .displayLargeWidthMobile {
     display:  none;
   }
-  }
+  } */
 

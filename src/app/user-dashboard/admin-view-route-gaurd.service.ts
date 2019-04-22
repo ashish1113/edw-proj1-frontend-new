@@ -12,13 +12,13 @@ export class AdminViewRouteGuardService implements CanActivate {
     console.log("in admin user guard service");
 
     if (Cookie.get('authtoken') === undefined || Cookie.get('authtoken') === '' || Cookie.get('authtoken') === null) {
-
+      console.log("auth-error");
       this.router.navigate(['/']);
 
       return false;
 
     } else if(Cookie.get('typeOfUser') !== 'Admin'){
-
+    
       this.router.navigate(['/']);
       return false;
 
