@@ -50,6 +50,7 @@
                     <button (click)="goToHome()" class="btn btn-info "
                         style="border-radius: 16px; background-color: burlywood">Home</button>
                 </div>
+                
             </div>
             <div class=" ForMonthView row m-0 d-flex justify-content-center "
                 style="background-color:white;color: black" *ngIf="dayViewToken == false">
@@ -126,6 +127,10 @@
                     </mwl-calendar-day-view>
                 </div>
             </div>
+            <div class="col-12 m-0 p-0  d-flex justify-content-center">
+                <button  class="btn btn-info " [routerLink]="['/admin-view/create']"
+                    style="border-radius: 16px; background-color: burlywood">create-new-event</button>
+            </div>
 
         </div>
 
@@ -170,19 +175,24 @@
 
             </div>
             <div class="row m-0 " style="background-color: Slategrey;">
-                <div class="col-8 d-flex justify-content-start "
+                <div class="col-6 d-flex justify-content-start "
                     style="text-align:center;align-self:center;color:white;text-transform: capitalize;">
 
                     {{userSelectedfullName}}
                 </div>
 
-                <div class="col-4 m-0 p-0  d-flex justify-content-end">
+                <div class="col-6 m-0 p-0  d-flex justify-content-end">
                     <button (click)="goToDashboard()" class="btn btn-info "
                         style="align-self:center;border-radius: 16px; background-color: burlywood">Back</button>
 
-                        <div class="col-3 m-0 p-0  d-flex justify-content-end">
+                        <div class="col-2 m-0 p-0  d-flex justify-content-end">
                             <button (click)="goToHome()" class="btn btn-info "
                                 style="border-radius: 16px; background-color: burlywood">Home</button>
+                            
+                        </div>
+                        <div class="col-2 m-0 p-0  d-flex justify-content-end">
+                            <button  class="btn btn-info " [routerLink]="['/admin-view/create']"
+                                style="border-radius: 16px; background-color: burlywood">create-new-event</button>
                         </div>
                 </div>
             </div>
@@ -317,13 +327,69 @@
                 
                  
                 <!-- <button ng-if="noEvents == true" type="button" disabled class="btn btn-primary" >Delete</button>  -->
-                <a  class="btn btn-primary"  data-dismiss="modal">Delete</a>
+                <a  class="btn btn-primary"  data-dismiss="modal" (click)= "DeleteEvent()">Delete</a>
+                <!-- <a  class="btn btn-primary"   (click)= "ViewEvent()">View</a> -->
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" (click)="EventDetail()">
+                        View
+                      </button>
                 <!-- <button ng-if="noEvents == false && selectedEventToken == false" type="button" disabled class="btn btn-primary" >Delete</button> -->
-                <a class="btn btn-primary" [routerLink]="['/admin-view/create']"  data-dismiss="modal">Create</a>
+                <!-- <a class="btn btn-primary" [routerLink]="['/admin-view/create']"  data-dismiss="modal">Create</a> -->
                 
-                <a  class="btn btn-primary" [routerLink]="['/admin-view/edit/:eventId']"  data-dismiss="modal">Edit</a>
+                <a  class="btn btn-primary" (click) = "goToEdit()" [routerLink]="['/admin-view/edit/:eventId']"  data-dismiss="modal">Edit</a>
                 
             </div> 
         </div>
     </div>
 </div>
+
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">View-Event</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+
+                    <ul class="list" *ngIf="noEvents == false">
+                            <li class="p-2 typeOfEvents" style="color:white;font-size: 25px;">
+                                <u>Event Details</u>
+                            </li>
+                            <li class="clearfix cursorPointer" >
+                             <!-- (click)="getSingleEventInformation(event.eventId)" -->
+                                <!-- *ngFor="let event of checkForEventsOnDateList"  -->
+                                
+                                <div class="userPresence" style="border-style: ridge;">
+                                    <ul style="list-style-type: square;">
+                                        
+                                        <li>userEmail: {{UserEmailOfSelectedEvent}}</li>
+                                        <li>eventId: {{EventIdOfSelectedEvent}}</li> 
+                                        <li>eventTitle: {{EventTitleOfSelectedEvent}}</li>        
+                                        <li>eventLocation: {{EventLocationOfSelectedEvent}}</li>
+                                        <li>eventDescription: {{EventDescriptionOfSelectedEvent}}</li>
+                                        <li>createdOn: {{CreatedOnOfSelectedEvent}}</li>
+                                        <li>createdBy: {{CreatedByOfSelectedEvent}}</li>
+                                        <li>mobileNumber: {{MobileNumberOfSelectedEvent}}</li>
+                                        <li>startTime: {{StartTimeOfSelectedEvent}}</li>
+                                        <li>endTime: {{EndTimeOfSelectedEvent}}</li>
+                                        
+                                    </ul>
+                                    
+                                </div>
+                                
+                            </li>
+        
+                        </ul>
+                        <p *ngIf="noEvents == true"> no events</p>
+              
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              
+            </div>
+          </div>
+        </div>
+      </div>

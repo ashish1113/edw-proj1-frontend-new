@@ -16,7 +16,8 @@ export class CreateEventComponent implements OnInit {
 
   }
 
-  public email: string;
+
+  public email: string ;
   public eventTitle: string;
   public mobileNumber: number;
   public startDate: Date;
@@ -28,13 +29,19 @@ export class CreateEventComponent implements OnInit {
   public eventLocation: string;
   public eventDescription: string;
   public authToken: string;
+  //public eventSelected: string;
 
 
 
   ngOnInit() {
-    this.authToken = Cookie.get('authtoken')
+    this.authToken = Cookie.get('authtoken');
+    this.email= Cookie.get('userSelectedUsername');
+    //this.eventSelected= Cookie.get('eventSelected');
+
   }
 
+  
+  
   public createEvent(): any{
     let eventData = {
       Email: this.email,
@@ -50,11 +57,13 @@ export class CreateEventComponent implements OnInit {
       Description: this.eventDescription,
       authToken: this.authToken
     }
+    
+      
 
     this.appService.createEvent(eventData).subscribe(
       data =>{
         console.log("event created")
-        console.log(data);
+        console.log("create event response data: ",data);
         this.toastr.successToastr('event created.', 'Success!');
 
         setTimeout(()=>{
@@ -67,6 +76,9 @@ export class CreateEventComponent implements OnInit {
         this.toastr.errorToastr('This is error toast.', 'Oops!');
       }
     )
+    
+    
   }
+
 
 }

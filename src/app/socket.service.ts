@@ -64,6 +64,18 @@ export class SocketService {
 
   } // end onlineUserList
 
+  public normalUserList = ()=>{
+
+    return Observable.create((observer) =>{
+
+      this.socket.on('all-Normal-user-list',(allNormalUserList) => {
+
+        observer.next(allNormalUserList);
+        console.log('the normal user list are:',allNormalUserList);
+      });
+    });
+  }
+
   public disconnectedSocket = () => {
 
     return Observable.create((observer) => {

@@ -39,20 +39,52 @@ export class AppService {
   }
 
   public createEvent(eventData): Observable<any> {
+    console.log("event data for create event in app service: ",eventData);
     const params = new HttpParams()
-      .set('email', eventData.email)
-      .set('eventTitle',eventData.eventTitle)
-      .set('mobileNumber', eventData.mobileNumber)
-      .set('startDate', eventData.startDate)
-      .set('endDate', eventData.endDate)
-      .set('eventLocation', eventData.eventLocation)
-      .set('eventDescription', eventData.eventDescription)
-      .set('startHours', eventData.startHours)
-      .set('startMins', eventData.startMins)
-      .set('endHours', eventData.endHours)
-      .set('endMins', eventData.endMins)
-      .set('authToken', eventData.authToken)
+      .set('email', eventData.Email)
+      .set('eventTitle',eventData.Title)
+      .set('mobileNumber', eventData.MobileNumber)
+      .set('startDate', eventData.StartDate)
+      .set('endDate', eventData.EndDate)
+      .set('eventLocation', eventData.Location)
+      .set('eventDescription', eventData.Description)
+      .set('startHours', eventData.StartHours)
+      .set('startMins', eventData.StartMins)
+      .set('endHours', eventData.EndHours)
+      .set('endMins', eventData.EndMins)
+    .set('authToken', eventData.authToken)
     return this.http.post(`${this.url}/api/v1/users/create/event`, params);
+  }
+  
+  public DeleteEvent(eventId): Observable<any> {
+
+    console.log("eventId to be deleted",eventId);
+
+    const params = new HttpParams()
+      .set('eventId',eventId)
+      //.set('authToken',authToken)
+    return this.http.post(`${this.url}/api/v1/users/${eventId}/delete?authToken=${Cookie.get('authtoken')}`,params);
+  }
+
+  public EditEvent(currentEventId,eventData): Observable<any>{
+    console.log("eventId of event to be edited : ", currentEventId);
+
+    console.log("event data in edit event  :",eventData)
+
+    const params = new HttpParams()
+      .set('userEmail', eventData.Email)
+      .set('eventTitle',eventData.Title)
+      .set('userMobileNumber', eventData.MobileNumber)
+      //.set('startTime', eventData.StartDate)
+      //.set('endTime', eventData.EndDate)
+      .set('eventLocation', eventData.Location)
+      .set('eventDescription', eventData.Description)
+      //.set('startHours', eventData.StartHours)
+      //.set('startMins', eventData.StartMins)
+      // .set('endHours', eventData.EndHours)
+      // .set('endMins', eventData.EndMins)
+    //.set('authToken', eventData.authToken)
+    return this.http.put(`${this.url}/api/v1/users/${currentEventId}/edit?authToken=${Cookie.get('authtoken')}`,params);
   }
 
   public signinFunction(data): Observable<any> {
@@ -74,6 +106,12 @@ export class AppService {
     
     
   }
+
+  public getSingleEventInformation (currentEventId) : Observable<any> {
+    return this.http.get(`${this.url}/api/v1/users/read/${currentEventId}/Details?authToken=${Cookie.get('authtoken')}`)
+  }
+
+
 
   
   

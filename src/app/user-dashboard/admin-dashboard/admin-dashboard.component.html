@@ -38,7 +38,7 @@
             <u>UsersList</u>
           </li>
           <li class="clearfix cursorPointer mt-3" [ngClass]="{'activeEvent': user.viewing == true}"
-            (click)="userSelectedByAdmin(user.userName, user.email,user.fullName)" *ngFor="let user of userList">
+            (click)="userSelectedByAdmin(user.userName, user.email,user.fullName)" *ngFor="let user of normalUserList">
             <div class="userPresence" style="border-style: ridge;border-color: blanchedalmond">
               <!-- <user-details [userFirstName]="user.fullName" [userLastName]="''" [userStatus]="'online'">
               </user-details> -->

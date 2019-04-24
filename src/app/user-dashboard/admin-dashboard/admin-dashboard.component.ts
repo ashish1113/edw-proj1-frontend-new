@@ -36,6 +36,7 @@ export class AdminDashboardComponent implements OnInit {
   userSelectedUsername: string;
   userSelectedemail: string;
   userSelectedfullName: string;
+  normalUserList: any[];
   //screenWidth: any;
   //viewToken: boolean;
   //checkForEventsOnDateList: any = [];
@@ -53,16 +54,17 @@ export class AdminDashboardComponent implements OnInit {
     this.authToken = Cookie.get('authtoken');
 
     this.userInfo = this.AppService.getUserInfoFromLocalstorage();
-    this.userSelectedUsername = Cookie.get('userSelectedUsername');
+    //this.userSelectedUsername = Cookie.get('userSelectedUsername');
     this.socketid = Cookie.get('socketId');
-    this.userSelectedemail = Cookie.get('userSelectedemail');
-    this.userSelectedfullName = Cookie.get('userSelectedfullName');
+    //this.userSelectedemail = Cookie.get('userSelectedemail');
+    //this.userSelectedfullName = Cookie.get('userSelectedfullName');
 
     this.checkStatus();
 
     this.verifyUserConfirmation();
 
     this.getOnlineUserList();
+    this.getNormalUserList();
   }
 
   public checkStatus: any = () => {
@@ -117,30 +119,49 @@ export class AdminDashboardComponent implements OnInit {
 
         }
 
-        console.log(this.userList);
+        console.log("this userList called: ",this.userList);
 
       }); // end online-user-list
+  }
+
+  public getNormalUserList: any = () =>{
+
+    this.SocketService.normalUserList().subscribe((allNormalUserList)=>{
+
+      this.normalUserList = [];
+      for( let x of allNormalUserList) {
+
+        let temp = x;
+        this.normalUserList.push(temp);
+      }
+
+      console.log("the  normal userList are :",this.normalUserList);
+    })
   }
 
   public userSelectedByAdmin: any = (userName, email, fullName) => {
 
 
-    console.log("setting user as active")
+    console.log("setting user as active: ",userName)
 
     // setting that user to chatting true   
-    this.userList.map((user) => {
+    this.normalUserList.map((user) => {
       if (user.userName == userName) {
         user.viewing = true;
+        Cookie.set('userSelectedUsername', user.userName);
+
+        //Cookie.set('userSelectedemail', email);
+        Cookie.set('userSelectedfullName', user.fullName)
       }
       else {
+        // Cookie.delete('userSelectedUsername', user.userName);
+        // Cookie.delete('userSelectedfullName', user.fullName);
         user.viewing = false;
+
       }
     })
 
-    Cookie.set('userSelectedUsername', userName);
-
-    Cookie.set('userSelectedemail', email);
-    Cookie.set('userSelectedfullName', fullName)
+    
 
 
     this.userSelectedUsername = userName;

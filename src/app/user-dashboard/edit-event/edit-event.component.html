@@ -1,3 +1,80 @@
-<p>
-  edit-event works!
-</p>
+<div class="container">
+  <div class="row" style="text-align:left">
+    <div class="col-md-12">
+      <form #editEventForm="ngForm" >
+        <div class="form-group">
+          <label>Email</label>
+          <input type="text" name="email" [(ngModel)]="email" #Email="ngModel" class="form-control"
+            readonly>
+
+        </div>
+
+        <div class="form-group">
+          <label>Event-Title</label>
+          <input type="text" name="eventTitle" [(ngModel)]="eventTitle" #title="ngModel"
+            class="form-control" placeholder="Enter event title" required>
+        </div>
+        <div [hidden]="title.valid || title.pristine" class="alert alert-danger">
+          Event title is required
+        </div>
+
+        <div class="form-group">
+          <label>MobileNumber</label>
+          <input type="text" name="mobileNumber" [(ngModel)]="mobileNumber" #mobileNumber1="ngModel"
+            class="form-control" placeholder="Enter mobile number">
+        </div>
+
+        <div class="form-group">
+          <label>StartDate</label>
+          <input type="text" name="startDate" [(ngModel)]="startDate" #date="ngModel" class="form-control"
+            placeholder="YYYY-MM-DD" required>
+        </div>
+
+        <div class="form-group">
+          <label>EndDate</label>
+          <input type="text" name="endDate" [(ngModel)]="endDate" #date="ngModel" class="form-control"
+            placeholder="YYYY-MM-DD" required>
+        </div>
+
+        <div class="form-group">
+          <label>StartHours</label>
+          <input type="text" name="StartHours" [(ngModel)]="startHours" #time="ngModel"
+            class="form-control" placeholder="Enter start hours" required>
+        </div>
+
+        <div class="form-group">
+            <label>StartMins</label>
+            <input type="text" name="startMins" [(ngModel)]="startMins" #time="ngModel" class="form-control"
+              placeholder="Enter start minutes" required>
+          </div>
+
+          <div class="form-group">
+              <label>EndHours</label>
+              <input type="text" name="endHours" [(ngModel)]="endHours" #time="ngModel" class="form-control"
+                placeholder="Enter end hours" required>
+            </div>
+
+            <div class="form-group">
+                <label>EndMins</label>
+                <input type="text" name="endMins" [(ngModel)]="endMins" #time="ngModel" class="form-control"
+                  placeholder="Enter end minutes" required>
+              </div>
+
+              <div class="form-group">
+                  <label>EventLocation</label>
+                  <input type="text" name="eventLocation" [(ngModel)]="eventLocation" #location="ngModel" class="form-control"
+                    placeholder="Enter event location" required>
+                </div>
+
+                <div class="form-group">
+                    <label>EventDescription</label>
+                    <input type="text" name="eventDescription"  [(ngModel)]="eventDescription"  #description="ngModel" class="form-control"
+                      placeholder="Enter event Description" required> 
+                  </div>
+
+                  <button type="submit" class="btn btn-primary"  (click)="editThisEvent()" [disabled]="!editEventForm.form.valid" >submit</button>
+      </form>
+
+    </div>
+  </div>
+</div>

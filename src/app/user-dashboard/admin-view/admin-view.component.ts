@@ -62,7 +62,7 @@ import * as bootstrap from 'bootstrap';
   selector: 'app-admin-view',
   templateUrl: './admin-view.component.html',
   styleUrls: ['./admin-view.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  //changeDetection: ChangeDetectionStrategy.OnPush,
 
   animations: [collapseAnimation],
   providers: [SocketService,AppService]
@@ -145,6 +145,20 @@ export class AdminViewComponent implements OnInit,OnDestroy {
   noEvents: boolean =true;
   tokenForDayView: boolean;
   selectedEventToken: boolean = false;
+
+  // variable to store event details
+
+  public EventIdOfSelectedEvent: string;
+  public MobileNumberOfSelectedEvent: any;
+  public CreatedOnOfSelectedEvent: any;
+  public CreatedByOfSelectedEvent: string;
+  public EventTitleOfSelectedEvent: string;
+  public EventLocationOfSelectedEvent: string;
+  public EventDescriptionOfSelectedEvent: string;
+  public UserEmailOfSelectedEvent: string;
+  public StartTimeOfSelectedEvent: any;
+  public EndTimeOfSelectedEvent: any;
+  public EventDurationOfSelectedEvent: any;
    
 
   constructor(
@@ -160,6 +174,7 @@ export class AdminViewComponent implements OnInit,OnDestroy {
     this.dayViewToken = true;
     this.view = CalendarView.Day;
     console.log(this.eventlist1);
+    
     //public Cycle = setInterval(this.timedFunction, 5);
     //setInterval(this.timedFunction, 5);
     
@@ -260,11 +275,11 @@ export class AdminViewComponent implements OnInit,OnDestroy {
     //console.log(";;;;;;;" screen.width);
     // }
 
-     //this.checkStatus();
+     this.checkStatus();
 
     // this.verifyUserConfirmation();
 
-     this.getOnlineUserList();
+     //this.getOnlineUserList();
 
    this.getAllEventsOfAUser(this.userSelectedUsername);
 
@@ -272,6 +287,8 @@ export class AdminViewComponent implements OnInit,OnDestroy {
     console.log("-------------------------------------")
     console.log(this.dayViewToken);
     
+
+    console.log("cookie value inside ngOnint",Cookie.get('eventSelected'))
   }
 
   public checkStatus: any = () => {
@@ -382,20 +399,24 @@ export class AdminViewComponent implements OnInit,OnDestroy {
     // this.selectedEventToken = true;
     // this.changeDetectorRef.detectChanges();
 
+     Cookie.delete('eventSelected');
+
     
 
-    console.log("setting user as active")
+    console.log("the eventId is :",eventId)
 
-    // setting that user to chatting true   
+    // setting that user to chatting true 
+    console.log("value of checkForEventsOnDateList", this.checkForEventsOnDateList);  
     this.checkForEventsOnDateList.map((event) => {
-      if (event.eventId == eventId) {
-        Cookie.set("eventSelected",eventId)
-       
+      console.log("value of event is :", event)
+      if ( event.eventId == eventId) {
+        console.log("eventId of selected event is :", event.eventId)
+        Cookie.set('eventSelected',event.eventId)
+        console.log("selected eventId is :", event.eventId )
+        console.log("cookie value inside if",Cookie.get('eventSelected'))
 
       }
-      else {
-        
-      }
+      
     })
    console.log(Cookie.get("eventSelected"))
    console.log(this.selectedEventToken)
@@ -448,15 +469,107 @@ export class AdminViewComponent implements OnInit,OnDestroy {
     location.reload();
   }
   public goToHome = () =>{
+    Cookie.delete('userSelectedUsername');
+    Cookie.delete('userSelectedemail');
+    Cookie.delete('userSelectedfullName');
     this.router.navigate(['/admin-dashboard']);
 
 
   }
+  
   public goToEdit = () =>{
+    if (Cookie.get('eventSelected') === undefined || Cookie.get('eventSelected') === '' || Cookie.get('eventSelected') === null) {
+      this.toastr.errorToastr('select an event to edit');
+      this.router.navigate(['/admin-view'])
+    }
+   
 
-    this.router.navigate(['/edit']);
+    //this.router.navigate(['/edit']);
     //this.changeDetectorRef.detectChanges();
 
+
+  }
+
+  public ViewEvent(): any{
+    if (Cookie.get('eventSelected') === undefined || Cookie.get('eventSelected') === '' || Cookie.get('eventSelected') === null) {
+      this.toastr.errorToastr('select an event to view');
+    }
+    else{
+      let eventId = Cookie.get('eventSelected');
+      this.AppService.getSingleEventInformation(eventId).subscribe(
+        data =>{
+          
+          this.toastr.successToastr('event selected.', 'Success!');
+        },
+        error => {
+          this.toastr.errorToastr('No event found ', 'Oops!')
+        }
+
+      )
+    }
+  }
+
+  public EventDetail(): any{
+
+    if (Cookie.get('eventSelected') === undefined || Cookie.get('eventSelected') === '' || Cookie.get('eventSelected') === null) {
+      this.toastr.errorToastr('select an event to view');
+    }
+    else{
+      let eventId = Cookie.get('eventSelected');
+      this.AppService.getSingleEventInformation(eventId).subscribe(
+        data =>{
+          this.EventIdOfSelectedEvent = data.data.eventId,
+          this.MobileNumberOfSelectedEvent = data.data.userMobileNumber,
+          this.CreatedOnOfSelectedEvent = data.data.createdOn,
+          this.CreatedByOfSelectedEvent = data.data.createdBy,
+          this.EventTitleOfSelectedEvent = data.data.eventTitle,
+          this.EventLocationOfSelectedEvent = data.data.eventLocation,
+          this.EventDescriptionOfSelectedEvent = data.data.eventDescription,
+          this.UserEmailOfSelectedEvent = data.data.userEmail,
+          this.StartTimeOfSelectedEvent = data.data.startTime,
+          this.EndTimeOfSelectedEvent = data.data.endTime,
+          this.EventDescriptionOfSelectedEvent = data.data.EventDurationInHours,
+          
+          this.toastr.successToastr('event details.', 'Success!');
+        },
+        error => {
+          this.toastr.errorToastr('No event found ', 'Oops!')
+        }
+
+      )
+    }
+
+  }
+
+
+
+  public DeleteEvent(): any {
+    if (Cookie.get('eventSelected') === undefined || Cookie.get('eventSelected') === '' || Cookie.get('eventSelected') === null) {
+      this.toastr.errorToastr('select an event to delete');
+    }
+    else {
+      let eventId = Cookie.get('eventSelected');
+      console.log("eventId to be deleted,,,,,,,,,,,,,,", eventId);
+      this.AppService.DeleteEvent(eventId).subscribe(
+        data => {
+          this.toastr.successToastr('event deleted.', 'Success!');
+          Cookie.delete('eventSelected');
+          this.dayViewToken = false
+          //this.changeDetectorRef.detectChanges();
+          location.reload();
+
+
+          // setTimeout(()=>{
+          //   this.router.navigate(['/admin-view']);
+          // },500)
+        },
+        error => {
+          this.toastr.errorToastr('This is error toast.', 'Oops!')
+        }
+
+
+      )
+    }
 
   }
   
@@ -465,6 +578,8 @@ export class AdminViewComponent implements OnInit,OnDestroy {
     console.log("in function")
     let dateInStr = (new Date (date1)).toLocaleDateString();
     console.log(dateInStr)
+    this.checkForEventsOnDateList = []
+
     for(let x of this.eventlist1)
     {   
       console.log("in for")
