@@ -72,7 +72,8 @@
                       placeholder="Enter event Description" required> 
                   </div>
 
-                  <button type="submit" class="btn btn-primary"  (click)="editThisEvent()" [disabled]="!editEventForm.form.valid" >submit</button>
+                  <button type="submit" style="margin:5px;" class="btn btn-primary"  (click)="editThisEvent()" [disabled]="!editEventForm.form.valid" >submit</button>
+                  <button type="submit" style="margin:5px;font-size:30px;" class="btn btn-primary"  (click)="goBack()"  >&#8635;</button>
       </form>
 
     </div>

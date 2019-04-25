@@ -20,6 +20,7 @@ import { EditEventComponent } from './edit-event/edit-event.component';
 import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
 import { AppService } from '../app.service';
 import { SocketService } from '../socket.service';
+import { AdminDashboardRouteGaurdService } from './admin-dashboard-route-gaurd.service';
 
 
 @NgModule({
@@ -37,17 +38,17 @@ import { SocketService } from '../socket.service';
     }),
     RouterModule.forChild([
       { path:'user-view', component: UserViewComponent,canActivate:[ViewRouteGuardService]},
-      { path:'admin-view', component: AdminViewComponent},
-      { path:'admin-dashboard', component: AdminDashboardComponent,canActivate:[AdminViewRouteGuardService]},
-      { path:'admin-view/create', component:CreateEventComponent},
+      { path:'admin-view', component: AdminViewComponent,canActivate:[AdminViewRouteGuardService]},
+      { path:'admin-dashboard', component: AdminDashboardComponent,canActivate:[AdminDashboardRouteGaurdService]},
+      { path:'admin-view/create', component:CreateEventComponent,canActivate:[AdminViewRouteGuardService]},
       // { path:'edit/:eventId', component:EditEventComponent},
       // { path:'delete/:eventId', component:DeleteEventComponent},
-      { path:'admin-view/edit/:eventId', component:EditEventComponent},
+      { path:'admin-view/edit/:eventId', component:EditEventComponent,canActivate:[AdminViewRouteGuardService]},
       
 
     ])
   ],
   declarations: [UserViewComponent, AdminViewComponent, CreateEventComponent, EditEventComponent, AdminDashboardComponent],
-  providers: [ViewRouteGuardService,AdminViewRouteGuardService,AppService,SocketService]
+  providers: [ViewRouteGuardService,AdminViewRouteGuardService,AdminDashboardRouteGaurdService,AppService,SocketService]
 })
 export class UserDashboardModule { }

@@ -43,7 +43,7 @@ export class AppService {
     const params = new HttpParams()
       .set('email', eventData.Email)
       .set('eventTitle',eventData.Title)
-      .set('mobileNumber', eventData.MobileNumber)
+      .set('userMobileNumber', eventData.MobileNumber)
       .set('startDate', eventData.StartDate)
       .set('endDate', eventData.EndDate)
       .set('eventLocation', eventData.Location)
@@ -71,11 +71,26 @@ export class AppService {
 
     console.log("event data in edit event  :",eventData)
 
+      // let startYear = eventData.startDate.getUTCFullYear();
+      // let startMonth = eventData.startDate.getUTCMonth();
+      // let startDate1 = eventData.startDate.getUTCDate();
+
+      // let StartTime = new Date(startYear,startMonth+1,startDate1,eventData.StartHours,eventData.StartMins);
+
+
+
+      // let endYear = eventData.endDate.getUTCFullYear();
+      // let endMonth = eventData.endDate.getUTCMonth();
+      // let endDate1 = eventData.endDate.getUTCDate();
+
+
+
+
     const params = new HttpParams()
       .set('userEmail', eventData.Email)
       .set('eventTitle',eventData.Title)
       .set('userMobileNumber', eventData.MobileNumber)
-      //.set('startTime', eventData.StartDate)
+      //.set('startTime',StartTime.toUTCString())
       //.set('endTime', eventData.EndDate)
       .set('eventLocation', eventData.Location)
       .set('eventDescription', eventData.Description)

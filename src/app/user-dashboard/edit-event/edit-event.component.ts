@@ -34,6 +34,10 @@ export class EditEventComponent implements OnInit, OnDestroy {
   ngOnInit() {
 
     this.currentEventId = Cookie.get('eventSelected');
+    if (this.currentEventId  === undefined || this.currentEventId  === '' || this.currentEventId  === null) {
+      this.toastr.errorToastr('select an event to edit');
+      this.router.navigate(['/admin-view']);
+    }
     this.getEventInfoInFormtion(this.currentEventId);
     //  this.appService.getSingleEventInformation(this.currentEventId).subscribe(result=>{
     //   console.log("result of current event id: ",)
@@ -70,6 +74,12 @@ export class EditEventComponent implements OnInit, OnDestroy {
 
 
     this.appService.getSingleEventInformation(currentEventid).subscribe(result => {
+      if (currentEventid  === undefined || currentEventid  === '' || currentEventid  === null) {
+        //this.toastr.errorToastr('select an event to edit');
+        this.router.navigate(['/admin-view']);
+      }
+      else{
+      
 
       let sd = new Date(result.data.startTime)
       let ed = new Date(result.data.endTime)
@@ -91,13 +101,29 @@ export class EditEventComponent implements OnInit, OnDestroy {
       this.eventLocation = result.data.eventLocation;
       this.eventDescription = result.data.eventDescription;
 
+      //  let startYear = (this.startDate).getFullYear();
+      //  let startMonth = (this.startDate).getMonth();
+      //  let startDate1 = (this.startDate).getDate();
+
+      // let StartTime = new Date(startYear,startMonth+1,startDate1,this.startHours,this.startMins);
+
+      // console.log("start time in utc format is :", StartTime.toUTCString());
+
+      // let endYear = this.endDate.getFullYear();
+      // let endMonth = this.endDate.getMonth();
+      // let endDate1 = this.endDate.getDate();
+
+      }
+
+      
+
 
     })
   }
 
   public editThisEvent(): any {
     if (this.currentEventId  === undefined || this.currentEventId  === '' || this.currentEventId  === null) {
-      this.toastr.errorToastr('select an event to delete');
+      this.toastr.errorToastr('select an event to edit');
     }
     else {
 
@@ -130,6 +156,10 @@ export class EditEventComponent implements OnInit, OnDestroy {
 
       )
     }
+  }
+
+  public goBack(){
+    this.router.navigate(['/admin-view']);
   }
 
   ngOnDestroy() {

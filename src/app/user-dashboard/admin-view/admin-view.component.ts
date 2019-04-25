@@ -528,7 +528,9 @@ export class AdminViewComponent implements OnInit,OnDestroy {
           this.UserEmailOfSelectedEvent = data.data.userEmail,
           this.StartTimeOfSelectedEvent = data.data.startTime,
           this.EndTimeOfSelectedEvent = data.data.endTime,
-          this.EventDescriptionOfSelectedEvent = data.data.EventDurationInHours,
+          //this.EventDurationOfSelectedEvent = data.data.EventDurationInHours,
+
+          console.log("mobile number of selected user is :",this.MobileNumberOfSelectedEvent)
           
           this.toastr.successToastr('event details.', 'Success!');
         },

@@ -370,11 +370,11 @@
                                         <li>eventTitle: {{EventTitleOfSelectedEvent}}</li>        
                                         <li>eventLocation: {{EventLocationOfSelectedEvent}}</li>
                                         <li>eventDescription: {{EventDescriptionOfSelectedEvent}}</li>
-                                        <li>createdOn: {{CreatedOnOfSelectedEvent}}</li>
+                                        <li>createdOn: {{CreatedOnOfSelectedEvent | date :'medium'}}</li>
                                         <li>createdBy: {{CreatedByOfSelectedEvent}}</li>
                                         <li>mobileNumber: {{MobileNumberOfSelectedEvent}}</li>
-                                        <li>startTime: {{StartTimeOfSelectedEvent}}</li>
-                                        <li>endTime: {{EndTimeOfSelectedEvent}}</li>
+                                        <li>startTime: {{StartTimeOfSelectedEvent | date :'medium'}}</li>
+                                        <li>endTime: {{EndTimeOfSelectedEvent | date :'medium'}}</li>
                                         
                                     </ul>
                                     

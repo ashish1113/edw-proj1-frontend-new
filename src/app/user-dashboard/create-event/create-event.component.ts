@@ -19,7 +19,7 @@ export class CreateEventComponent implements OnInit {
 
   public email: string ;
   public eventTitle: string;
-  public mobileNumber: number;
+  public userMobileNumber: any;
   public startDate: Date;
   public endDate: Date;
   public startHours: string;
@@ -46,7 +46,7 @@ export class CreateEventComponent implements OnInit {
     let eventData = {
       Email: this.email,
       Title: this.eventTitle,
-      MobileNumber : this.mobileNumber,
+      MobileNumber : this.userMobileNumber,
       StartDate: this.startDate,
       EndDate: this.endDate,
       StartHours: this.startHours,
@@ -78,6 +78,10 @@ export class CreateEventComponent implements OnInit {
     )
     
     
+  }
+
+  public goBack(){
+    this.router.navigate(['/admin-view']);
   }
 
 
