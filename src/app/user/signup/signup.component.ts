@@ -21,7 +21,7 @@ export class SignupComponent implements OnInit {
   ngOnInit() {
   }
 
-  public goTOSignIn: any = () =>{
+  public goToSignIn: any = () =>{
     this.router.navigate(['/']);
   } // end of goToSignIn function.
 
@@ -64,7 +64,7 @@ export class SignupComponent implements OnInit {
         if (apiResponse.status === 200){
           this.toastr.successToastr('Signup successful');
           setTimeout(() => {
-            this.goTOSignIn();
+            this.goToSignIn();
           }, 2000);
         }
         else {
