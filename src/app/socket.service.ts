@@ -19,10 +19,10 @@ export class SocketService {
 
   private url = 'http://192.168.1.67:3000';
 
-  private socket;
+  public socket;
 
 
-  constructor(public http: HttpClient) {
+  constructor(public http: HttpClient,) {
     // connection is being created.
     // that handshake
     this.socket = io(this.url);
@@ -105,6 +105,33 @@ export class SocketService {
   } // end setUser
 
   // events to be emitted
+  
+
+  public sendNotificationRequest = (authToken,socketId) =>{
+    let userdata1 ={authToken:authToken,userSocketId:socketId}
+    this.socket.emit('notification1',userdata1);
+  }
+
+
+  public getNotification = () =>
+  {
+    return Observable.create((observer) => {
+      this.socket.on('notification-send',notificationObj=>{
+        observer.next(notificationObj);
+        console.log("notifiation recieved from the server is:",notificationObj);
+
+      });
+    });
+
+  }
+
+  // this.socket.on('notification-send',notificationObj=>{
+  //   //observer.next(notificationObj);
+  //   console.log("notifiation recieved from the server is:",notificationObj);
+
+  // });
+
+  
 
 
   private handleError(err: HttpErrorResponse) {

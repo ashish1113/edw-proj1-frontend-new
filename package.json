@@ -30,6 +30,7 @@
     "flatpickr": "^4.5.7",
     "font-awesome": "^4.7.0",
     "jquery": "^3.4.0",
+    "ng-bootstrap-modal": "^1.1.19",
     "ng2-cookies": "^1.0.12",
     "ng6-bootstrap-modal": "^1.0.2",
     "ng6-toastr-notifications": "^1.0.4",

@@ -321,7 +321,7 @@ export class AdminViewComponent implements OnInit,OnDestroy {
         this.SocketService.setUser(data1);
         console.log(",,,,,,,,,,,,,,,,")
         console.log(this.authToken)
-        this.getOnlineUserList()
+        //this.getOnlineUserList()
 
       });
   }

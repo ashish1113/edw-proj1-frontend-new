@@ -21,12 +21,14 @@ import { LoginComponent } from './user/login/login.component';
 import { UserDashboardModule } from './user-dashboard/user-dashboard.module';
 //import { UserViewComponent } from './user-dashboard/user-view/user-view.component';
 import { SharedModule } from './shared/shared.module';
+import { ResetPasswordComponent } from './reset-password/reset-password.component';
 
 
 
 @NgModule({
   declarations: [
     AppComponent,
+    ResetPasswordComponent,
    
    
   ],
@@ -50,11 +52,12 @@ import { SharedModule } from './shared/shared.module';
     }),
     RouterModule.forRoot([
       { path: 'login', component: LoginComponent, pathMatch: 'full'},
+      { path: 'api/v1/users/reset/:token', component: ResetPasswordComponent},
       { path: '', redirectTo: 'login', pathMatch: 'full'},
       { path: '*', component: LoginComponent},
       { path: '**', component: LoginComponent},
       
-      //{ path: 'user-dashboard', component: UserViewComponent, pathMatch: 'full'}
+     // { path: 'api/v1/users/reset/:token', component: ResetPasswordComponent}
     ])
   ],
   providers: [AppService],

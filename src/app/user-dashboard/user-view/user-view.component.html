@@ -1,119 +1,354 @@
-<div class="container-fluid">
+<div class=" container-fluid bg-dark">
+  <div class="row">
+    <!--for mobile view-->
+    <div class="displayBlockMobile" style="width:100%;z-index:1;">
+      <div class="col-sm-12">
+        <nav class="navbar navbar-expand-md navbar-fixed navbar-dark justify-content-between">
 
-    <div class="row">
-      <div class=col-md-3>
-        <div class="row">
-          <div class="col-md-6">
-            <div class="btn-group">
-              <div class="btn btn-primary" mwlCalendarPreviousView [view]="view" [(viewDate)]="viewDate"
-                (viewDateChange)="closeOpenMonthViewDay()">
-                Previous
-              </div>
-              <div class="btn btn-outline-secondary" mwlCalendarToday [(viewDate)]="viewDate">
-                Today
-              </div>
-              <div class="btn btn-primary" mwlCalendarNextView [view]="view" [(viewDate)]="viewDate"
-                (viewDateChange)="closeOpenMonthViewDay()">
-                Next
-              </div>
+          <a class="navbar-brand text-white">
+            {{userInfo.firstName}} {{userInfo.lastName}}
+            <i class="online" *ngIf="disconnectedSocket == false"></i>
+            <i class="offline" *ngIf="disconnectedSocket == true"></i>
+          </a>
+
+
+
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+
+            <span class="navbar-toggler-icon"></span>
+
+          </button>
+
+          <div class="collapse people-list navbar-collapse" id="navbarSupportedContent">
+
+            <br />
+
+            <div class=" bg-danger">
+              <button (click)="logout()" class="btn btn-info customButton ">Logout</button>
             </div>
+
+
+
           </div>
-          <div class="col-md-6">
-            <h3>{{ viewDate | calendarDate:(view + 'ViewTitle'):'en' }}</h3>
+
+        </nav>
+      </div>
+      <div class="row m-0 " style="background-color: Slategrey;">
+        <!-- <div class="col-6 d-flex justify-content-start "
+          style="text-align:center;align-self:center;color:white;text-transform: capitalize;">
+
+          {{userSelectedfullName}}
+        </div> -->
+        <!-- <div class="col-3 m-0 p-0  d-flex justify-content-end">
+          <button (click)="goToDashboard()" class="btn btn-info "
+            style="border-radius: 16px; background-color: burlywood">Back</button>
+        </div> -->
+        <div class="col-3 m-0 p-0  d-flex justify-content-end">
+          <button (click)="goToHome()" class="btn btn-info "
+            style="border-radius: 16px; background-color: burlywood">Home</button>
+        </div>
+      </div>
+      <div class=" ForMonthView row m-0 d-flex justify-content-center " style="background-color:white;color: black"
+        *ngIf="dayViewToken == false">
+        <div class="col-3">
+          <div class="btn m-0 " style="border-radius: 50%;align-self:center;color:blue;" mwlCalendarPreviousView
+            [view]="view" [(viewDate)]="viewDate" (viewDateChange)="closeOpenMonthViewDay()">
+            <span style="font: size 50px;"> &#8678;</span>
           </div>
         </div>
-        <mwl-calendar-month-view [viewDate]="viewDate" [events]="events" [refresh]="refresh"
-          [activeDayIsOpen]="activeDayIsOpen" (dayClicked)="dayClicked($event.day)"
-          (eventClicked)="handleEvent('Clicked', $event.event)" (eventTimesChanged)="eventTimesChanged($event)">
-        </mwl-calendar-month-view>
+        <div class="col-6">
+
+
+          <div class="btn-group d-flex justify-content-center" style="text-align:center;">
+
+            &nbsp;
+            <div style="text-align:center;color:black;">
+              <h5>{{ viewDate | calendarDate:(view + 'ViewTitle'):'en' }}</h5>
+            </div>
+            &nbsp;
+
+          </div>
+        </div>
+        <div class="col-3 d-flex justify-content-center">
+          <div class="btn  m-0" style="border-radius:50%;align-self:center;color:blue;" mwlCalendarNextView
+            [view]="view" [(viewDate)]="viewDate" (viewDateChange)="closeOpenMonthViewDay()">
+            <span style="font: size 50px; text-align: center"> &#8680; </span>
+          </div>
+        </div>
       </div>
-      <div class=col-md-9>
-        <mwl-calendar-week-view [viewDate]="viewDate" [events]="events" [refresh]="refresh"
-          (eventClicked)="handleEvent('Clicked', $event.event)" (eventTimesChanged)="eventTimesChanged($event)">
-        </mwl-calendar-week-view>
+      <div class=" FordayMobile row m-0 d-flex justify-content-center " style="background-color:white;color: black"
+        *ngIf="dayViewToken == true">
+
+        <div class="col-3">
+          <div class="btn m-0 " style="border-radius: 50%;align-self:center;color:blue;" mwlCalendarPreviousView
+            [view]="view" [(viewDate)]="viewDate" (viewDateChange)="closeOpenMonthViewDay()">
+            <span style="font: size 50px;"> &#8678;</span>
+          </div>
+        </div>
+        <div class="col-6">
+
+
+          <div class="btn-group d-flex justify-content-center" style="text-align:center;">
+
+            &nbsp;
+            <div style="text-align:center;color:black;">
+              <h5>{{ viewDate | calendarDate:(view + 'ViewTitle'):'en' }}</h5>
+            </div>
+            &nbsp;
+
+          </div>
+        </div>
+        <div class="col-3 d-flex justify-content-center">
+          <div class="btn  m-0" style="border-radius:50%;align-self:center;color:blue;" mwlCalendarNextView
+            [view]="view" [(viewDate)]="viewDate" (viewDateChange)="closeOpenMonthViewDay()">
+            <span style="font: size 50px; text-align: center"> &#8680; </span>
+          </div>
+        </div>
       </div>
-  
-  
+
+      <div class="col-12 bg-success">
+        <div *ngIf="dayViewToken == false">
+          <mwl-calendar-month-view [viewDate]="viewDate" [events]="events" [refresh]="refresh"
+            [activeDayIsOpen]="activeDayIsOpen" (dayClicked)="dayClicked($event.day)"
+            (eventTimesChanged)="eventTimesChanged($event)">
+          </mwl-calendar-month-view>
+        </div>
+        <div *ngIf="dayViewToken == true ">
+          <mwl-calendar-day-view [viewDate]="viewDate" [events]="events" [refresh]="refresh"
+            (eventTimesChanged)="eventTimesChanged($event)">
+          </mwl-calendar-day-view>
+        </div>
+      </div>
+
     </div>
-  
-  
-    <!-- Everything you see below is just for the demo, you don't need to include it in your app -->
-  
-    <br /><br /><br />
-  
-    <h3>
-      Edit events
-      <button class="btn btn-primary pull-right" (click)="addEvent()">
-        Add new
-      </button>
-      <div class="clearfix"></div>
-    </h3>
-  
-    <div class="table-responsive">
-      <table class="table table-bordered">
-        <thead>
-          <tr>
-            <th>Title</th>
-            <th>Primary color</th>
-            <th>Secondary color</th>
-            <th>Starts at</th>
-            <th>Ends at</th>
-            <th>Remove</th>
-          </tr>
-        </thead>
-  
-        <tbody>
-          <tr *ngFor="let event of events">
-            <td>
-              <input type="text" class="form-control" [(ngModel)]="event.title" (keyup)="refresh.next()" />
-            </td>
-            <td>
-              <input type="color" [(ngModel)]="event.color.primary" (change)="refresh.next()" />
-            </td>
-            <td>
-              <input type="color" [(ngModel)]="event.color.secondary" (change)="refresh.next()" />
-            </td>
-            <td>
-              <input class="form-control" type="text" mwlFlatpickr [(ngModel)]="event.start"
-                (ngModelChange)="refresh.next()" [altInput]="true" [convertModelValue]="true" [enableTime]="true"
-                dateFormat="Y-m-dTH:i" altFormat="F j, Y H:i" placeholder="Not set" />
-            </td>
-            <td>
-              <input class="form-control" type="text" mwlFlatpickr [(ngModel)]="event.end"
-                (ngModelChange)="refresh.next()" [altInput]="true" [convertModelValue]="true" [enableTime]="true"
-                dateFormat="Y-m-dTH:i" altFormat="F j, Y H:i" placeholder="Not set" />
-            </td>
-            <td>
-              <button class="btn btn-danger" (click)="deleteEvent(event)">
-                Delete
-              </button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+
+
+    <!--  for non mobile view -->
+
+    <div class="displayNoneMobile" style="width:100%;z-index:1;">
+      <div class="col-sm-12">
+
+        <nav class="navbar navbar-expand-md navbar-fixed navbar-dark justify-content-between">
+
+          <a class="navbar-brand text-white">
+            {{userInfo.firstName}} {{userInfo.lastName}}
+            <i class="online" *ngIf="disconnectedSocket == false"></i>
+            <i class="offline" *ngIf="disconnectedSocket == true"></i>
+          </a>
+
+
+
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+
+            <span class="navbar-toggler-icon"></span>
+
+          </button>
+
+          <div class="collapse people-list navbar-collapse" id="navbarSupportedContent">
+
+            <br />
+
+            <div class=" bg-danger">
+              <button (click)="logout()" class="btn btn-info customButton ">Logout</button>
+            </div>
+
+
+
+          </div>
+
+        </nav>
+
+
+
+      </div>
+      <!-- <div class="row m-0 " style="background-color: Slategrey;">
+        <div class="col-8 d-flex justify-content-start "
+          style="text-align:center;align-self:center;color:white;text-transform: capitalize;">
+
+          {{userSelectedfullName}}
+        </div>
+
+        <div class="col-4 m-0 p-0  d-flex justify-content-end">
+          <button (click)="goToDashboard()" class="btn btn-info "
+            style="align-self:center;border-radius: 16px; background-color: burlywood">Back</button>
+
+          <div class="col-3 m-0 p-0  d-flex justify-content-end">
+            <button (click)="goToHome()" class="btn btn-info "
+              style="border-radius: 16px; background-color: burlywood">Home</button>
+          </div>
+        </div> 
+      </div>-->
+      <div class="container">
+        <div class="row bothCalendars " style="align-self:center">
+
+          <div class="col-4  justify-content-end">
+            <div class=" ForMonth row m-0  " style="background-color:white;color: black;">
+              <div class="col-3">
+                <div class="btn m-0 " style="border-radius: 50%;align-self:center;color:blue;" mwlCalendarPreviousView
+                  [view]=" CalendarView.Month" [(viewDate)]="viewDate" (viewDateChange)="closeOpenMonthViewDay()">
+                  <span style="font: size 50px;"> &#8678;</span>
+                </div>
+              </div>
+              <div class="col-6">
+
+
+                <div class="btn-group " style="text-align:center;">
+
+                  &nbsp;
+                  <div style="text-align:center;color:black;">
+                    <h5>{{ viewDate | calendarDate:( CalendarView.Month + 'ViewTitle'):'en' }}</h5>
+                  </div>
+                  &nbsp;
+
+                </div>
+              </div>
+              <div class="col-3 ">
+                <div class="btn  m-0" style="border-radius:50%;align-self:center;color:blue;" mwlCalendarNextView
+                  [view]=" CalendarView.Month" [(viewDate)]="viewDate" (viewDateChange)="closeOpenMonthViewDay()">
+                  <span style="font: size 50px; text-align: center"> &#8680; </span>
+                </div>
+              </div>
+            </div>
+            <div class="m-0 ">
+              <mwl-calendar-month-view [viewDate]="viewDate" [events]="events" [refresh]="refresh"
+                [activeDayIsOpen]="activeDayIsOpen" (dayClicked)="dayClicked($event.day)"
+                (eventClicked)="handleEvent('Clicked', $event.event)" (eventTimesChanged)="eventTimesChanged($event)">
+              </mwl-calendar-month-view>
+            </div>
+
+          </div>
+
+          <div class="col-8   ">
+            <div class=" Forday row m-0  " style="background-color:white;color: black">
+
+              <div class="col-3">
+                <div class="btn m-0 p-0" style="border-radius: 50%;align-self:center;color:blue;"
+                  mwlCalendarPreviousView [view]=" CalendarView.Day" [(viewDate)]="viewDate"
+                  (viewDateChange)="closeOpenMonthViewDay()">
+                  <span style="font: size 50px;"> &#8678;</span>
+                </div>
+              </div>
+              <div class="col-6 ">
+
+
+                <div class="btn-group " style="text-align:center;">
+
+                  &nbsp;
+                  <div style="text-align:center;color:black;">
+                    <h5>{{ viewDate | calendarDate:( CalendarView.Day + 'ViewTitle'):'en' }}</h5>
+                  </div>
+                  &nbsp;
+
+                </div>
+              </div>
+              <div class="col-3 ">
+                <div class="btn  m-0" style="border-radius:50%;align-self:center;color:blue;" mwlCalendarNextView
+                  [view]=" CalendarView.Day" [(viewDate)]="viewDate" (viewDateChange)="closeOpenMonthViewDay()">
+                  <span style="font: size 50px; text-align: center"> &#8680; </span>
+                </div>
+              </div>
+            </div>
+            <div class="m-0 p-0">
+              <mwl-calendar-week-view [viewDate]="viewDate" [events]="events" [refresh]="refresh"
+                (eventClicked)="handleEvent('Clicked', $event.event)" (eventTimesChanged)="eventTimesChanged($event)">
+              </mwl-calendar-week-view>
+            </div>
+          </div>
+
+        </div>
+      </div>
     </div>
-  
-    <ng-template #modalContent let-close="close">
+  </div>
+
+</div>
+
+<!-- Modal for Notification -->
+<div class="modal fade" id="notificationModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Event action occurred</h5>
-        <button type="button" class="close" (click)="close()">
+        <h5 class="modal-title" id="exampleModalLabel">Hey You Have a Meeting Soon</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-        <div>
-          Action:
-          <pre>{{ modalData?.action }}</pre>
-        </div>
-        <div>
-          Event:
-          <pre>{{ modalData?.event | json }}</pre>
-        </div>
+        
+          <ul style="border-style:ridge; list-style-type: square;">
+            <li>Event Details</li>
+          </ul>
+
+          <ul style="border-style:ridge; list-style-type: square; " >
+              <li>eventTitle : {{eventTitle}}</li>
+              <li>eventStartTime : {{startTime | date : 'medium'}}</li>
+              <li>eventLoation : {{placeOfEvent}}</li>
+              <li>eventId : {{eventId}}</li>
+            
+            
+            </ul>
+
+        <!-- {{eventTitle}}
+        {{startTime}}
+        {{placeOfEvent}}
+        {{eventId}} -->
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-outline-secondary" (click)="close()">
-          OK
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Dismiss</button>
+        <button type="button" class="btn btn-primary" (click)="toPushNotificationObjForSnooze()"data-dismiss="modal">Snooze</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal for Snoozed Notification -->
+<div class="modal fade" id="snoozedNotificationModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Hey Your Meeting is About To Start</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
         </button>
       </div>
-    </ng-template>
+      <div class="modal-body">
+          <!-- <li *ngFor ="let notificationObj of snoozedNotificationList" >
+
+
+
+         {{notificationObj.snoozedEventTitle}}
+         {{notificationObj.snoozedEventStartTime}}
+         {{notificationObj.snoozedEventPlace}}
+         {{notificationObj.snoozedEventId}}
+ 
+          </li> -->
+          <ul style="border-style:ridge; list-style-type: square;">
+            <li>Event Details</li>
+          </ul>
+
+          <ul style="border-style:ridge; list-style-type: square; " *ngFor ="let notificationObj of snoozedNotificationList">
+            <li>eventTitle : {{notificationObj.snoozedEventTitle}}</li>
+            <li>eventStartTime : {{notificationObj.snoozedEventStartTime | date : 'medium'}}</li>
+            <li>eventLoation : {{notificationObj.snoozedEventPlace}}</li>
+            <li>eventId : {{notificationObj.snoozedEventId}}</li>
+          
+          
+          </ul>
+
+         
+        
+         
+
+        
+        
+
+        
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="dismissFunction()">Dismiss</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal">Snooze</button>
+      </div>
+    </div>
   </div>
+</div>

@@ -121,6 +121,20 @@ export class AppService {
     
     
   }
+  public getResetLink (email) :Observable<any>{
+    console.log("came inside resetlink fn: ",email);
+    const params = new HttpParams()
+    .set('email', email)
+    return this.http.post(`${this.url}/api/v1/users/forgot/password`,params)
+
+  }
+
+  public setNewPassword (password,token):Observable<any>
+  {
+    const params = new HttpParams()
+    .set('newPassword', password)
+    return this.http.post(`${this.url}/api/v1/users/reset/${token}`,params)
+  }
 
   public getSingleEventInformation (currentEventId) : Observable<any> {
     return this.http.get(`${this.url}/api/v1/users/read/${currentEventId}/Details?authToken=${Cookie.get('authtoken')}`)

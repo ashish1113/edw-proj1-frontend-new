@@ -13,9 +13,15 @@ export class LoginComponent implements OnInit {
 
   public userName: any ;
   public password: any;
+  public email : any;
   constructor(public router:Router, public appService:AppService, public toastr: ToastrManager) { }
 
   ngOnInit() {
+  }
+
+  public validateEmail(email) {
+    var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(email);
   }
 
   public goToSignUp: any = () =>{
@@ -59,7 +65,7 @@ export class LoginComponent implements OnInit {
 
           if(this.userName.substr(this.userName.length - 5) === "admin"){
             console.log("you are admin"+ "userName :",this.userName);
-            this.router.navigate(['/admin-dashboard']);
+            this.router.navigate(['/admin-view']);
           }
           else{
             console.log("you are normal user"+ "userName :",this.userName);
@@ -75,6 +81,35 @@ export class LoginComponent implements OnInit {
     }
    
 
+  }
+
+   public forgotPasswordFunction = () =>
+  {
+    // $('#exampleModal').modal('show');
+    if ((this.validateEmail(this.email)))    
+    {
+      this.appService.getResetLink(this.email).subscribe((apiResponse)=>
+      {
+        if(apiResponse.status== 200)
+       {
+        
+        this.toastr.successToastr('check your email for the link ')
+        }
+        else {
+          this.toastr.errorToastr('some error occured or userDetails not found')
+        }
+      },(err)=>{
+        //console.log("error inside getresetlink: ",err);
+      }
+      )
+     // console.log("forgot Password funtion ",this.email)
+    }
+
+    else{
+      this.toastr.errorToastr('Enter a valid email')
+      //alert("Enter a valid email");
+      console.log("forgot password function :- Enter a valid email")
+    }
   }
 
 }

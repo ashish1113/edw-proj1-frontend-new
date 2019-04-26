@@ -5,6 +5,7 @@ import { SignupComponent } from './signup/signup.component';
 import { RouterModule, Routes } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ToastrModule } from 'ng6-toastr-notifications';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   imports: [
@@ -15,6 +16,7 @@ import { ToastrModule } from 'ng6-toastr-notifications';
       { path:'signup', component: SignupComponent}
     ])
   ],
+  //NgbModule.forRoot(),
   declarations: [LoginComponent, SignupComponent]
 })
 export class UserModule { }
