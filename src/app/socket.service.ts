@@ -154,6 +154,69 @@ export class SocketService {
 
   }  // END handleError
 
+  public toSendRequestToGetNotificationFromServer = (userName) =>
+  {
+    console.log("sendMessageCalledFromAdminSide :",userName)
+    this.socket.emit('send-notification-on-event-create',userName);
+  
+  }
+
+  public toSendRequestToGetNotificationFromServerOnEdit = (userName) =>
+  {
+    console.log("sendMessageCalledFromAdminSide :",userName)
+    this.socket.emit('send-notification-on-event-edit',userName);
+  
+  }
+
+  public toSendRequestToGetNotificationFromServerOnDelete = (userName) =>
+  {
+    console.log("sendMessageCalledFromAdminSideOnDelete :",userName)
+    this.socket.emit('send-notification-on-event-delete',userName);
+  
+  }
+
+
+  public toGetNotificationFromServerOnCreateOfNewEvent = () => {
+    return Observable.create((observer) => {
+        
+      this.socket.on('notification-for-new-event',notificationObj=>{
+        console.log("getNotificationforcreatecalledonuser",notificationObj)
+        observer.next(notificationObj);
+
+      })
+
+    })
+
+  }
+
+
+  public toGetNotificationFromServerOnEditOfEvent = () => {
+    return Observable.create((observer) => {
+        
+      this.socket.on('notification-for-event-edit',notificationObj=>{
+        console.log("getNotificationforeditcalledonuser",notificationObj)
+        observer.next(notificationObj);
+
+      })
+
+    })
+
+  }
+
+  public toGetNotificationFromServerOnDeleteOfEvent = () => {
+    return Observable.create((observer) => {
+        
+      this.socket.on('notification-for-event-delete',notificationObj=>{
+        console.log("getNotificationforDeletecalledonuser",notificationObj)
+        observer.next(notificationObj);
+
+      })
+
+    })
+
+  }
+
+
   public exitSocket = () => {
 
 

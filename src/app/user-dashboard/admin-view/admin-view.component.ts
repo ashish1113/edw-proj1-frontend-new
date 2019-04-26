@@ -555,6 +555,7 @@ export class AdminViewComponent implements OnInit,OnDestroy {
       this.AppService.DeleteEvent(eventId).subscribe(
         data => {
           this.toastr.successToastr('event deleted.', 'Success!');
+          this.SocketService.toSendRequestToGetNotificationFromServerOnDelete(this.userSelectedUsername);
           Cookie.delete('eventSelected');
           this.dayViewToken = false
           //this.changeDetectorRef.detectChanges();

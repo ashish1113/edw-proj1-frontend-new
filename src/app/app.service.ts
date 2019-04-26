@@ -67,9 +67,9 @@ export class AppService {
   }
 
   public EditEvent(currentEventId,eventData): Observable<any>{
-    console.log("eventId of event to be edited : ", currentEventId);
+    console.log("eventId of event to be edited ------------ : ", currentEventId);
 
-    console.log("event data in edit event  :",eventData)
+    console.log("event data in edit event ************** :",eventData)
 
       // let startYear = eventData.startDate.getUTCFullYear();
       // let startMonth = eventData.startDate.getUTCMonth();
@@ -90,8 +90,8 @@ export class AppService {
       .set('userEmail', eventData.Email)
       .set('eventTitle',eventData.Title)
       .set('userMobileNumber', eventData.MobileNumber)
-      //.set('startTime',StartTime.toUTCString())
-      //.set('endTime', eventData.EndDate)
+      .set('startTime',eventData.StartTime)
+      .set('endTime', eventData.EndTime)
       .set('eventLocation', eventData.Location)
       .set('eventDescription', eventData.Description)
       //.set('startHours', eventData.StartHours)

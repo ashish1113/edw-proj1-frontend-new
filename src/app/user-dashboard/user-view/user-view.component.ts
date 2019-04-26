@@ -184,6 +184,18 @@ export class UserViewComponent implements OnInit ,OnDestroy {
   snoozeStartTime: any;
   snoozePlace: any;
   snoozeEventId: any;
+
+  public EventIdOfSelectedEvent: string;
+  public MobileNumberOfSelectedEvent: any;
+  public CreatedOnOfSelectedEvent: any;
+  public CreatedByOfSelectedEvent: string;
+  public EventTitleOfSelectedEvent: string;
+  public EventLocationOfSelectedEvent: string;
+  public EventDescriptionOfSelectedEvent: string;
+  public UserEmailOfSelectedEvent: string;
+  public StartTimeOfSelectedEvent: any;
+  public EndTimeOfSelectedEvent: any;
+  public EventDurationOfSelectedEvent: any;
   
    
 
@@ -210,6 +222,7 @@ export class UserViewComponent implements OnInit ,OnDestroy {
      console.log("-------------------------------")
      console.log(this.checkForEventsOnDateList);
      console.log(this.noEvents)
+     $('#exampleModalScrollable').modal('show');
       if (
         (isSameDay(this.viewDate, date) && this.activeDayIsOpen === true) ||
         events.length === 0
@@ -318,6 +331,22 @@ export class UserViewComponent implements OnInit ,OnDestroy {
 
       console.log("array of notifications after subscribe",this.arrayToSendNotification)
 
+      //to get Notification on new event create
+
+      this.SocketService.toGetNotificationFromServerOnCreateOfNewEvent().subscribe((notificationData)=>{
+        this.toCheckOwnNotification(notificationData);
+      })
+
+      //to get Notification on edit event
+
+      this.SocketService.toGetNotificationFromServerOnEditOfEvent().subscribe((notificationData)=>{
+        this.toCheckOwnNotification(notificationData);
+      })
+
+      //to get Notification on delete of an event
+      this.SocketService.toGetNotificationFromServerOnDeleteOfEvent().subscribe((notificationData)=>{
+        this.toCheckOwnNotification(notificationData);
+      })
   }
 
   public checkStatus: any = () => {
@@ -446,6 +475,87 @@ export class UserViewComponent implements OnInit ,OnDestroy {
 
     console.log(this.noEvents)
     
+  }
+
+  public eventSelectedByUser: any = (eventId) => {
+    // this.selectedEventToken = true;
+    // this.changeDetectorRef.detectChanges();
+
+     //Cookie.delete('eventSelected');
+
+    
+
+    console.log("the eventId is :",eventId)
+
+    // setting that user to chatting true 
+    console.log("value of checkForEventsOnDateList", this.checkForEventsOnDateList);  
+    this.checkForEventsOnDateList.map((event) => {
+      console.log("value of event is :", event)
+      if ( event.eventId == eventId) {
+        console.log("eventId of selected event is :", event.eventId)
+        Cookie.set('eventSelected',event.eventId)
+        console.log("selected eventId is :", event.eventId )
+        console.log("cookie value inside if",Cookie.get('eventSelected'))
+
+      }
+      
+    })
+   console.log(Cookie.get("eventSelected"))
+   console.log(this.selectedEventToken)
+  }
+
+  public ViewEvent(): any{
+    if (Cookie.get('eventSelected') === undefined || Cookie.get('eventSelected') === '' || Cookie.get('eventSelected') === null) {
+      this.toastr.errorToastr('select an event to view');
+    }
+    else{
+      let eventId = Cookie.get('eventSelected');
+      this.AppService.getSingleEventInformation(eventId).subscribe(
+        data =>{
+          
+          this.toastr.successToastr('event selected.', 'Success!');
+        },
+        error => {
+          this.toastr.errorToastr('No event found ', 'Oops!')
+        }
+
+      )
+    }
+  }
+
+
+  public EventDetail(): any{
+
+    if (Cookie.get('eventSelected') === undefined || Cookie.get('eventSelected') === '' || Cookie.get('eventSelected') === null) {
+      this.toastr.errorToastr('select an event to view');
+    }
+    else{
+      let eventId = Cookie.get('eventSelected');
+      this.AppService.getSingleEventInformation(eventId).subscribe(
+        data =>{
+          this.EventIdOfSelectedEvent = data.data.eventId,
+          this.MobileNumberOfSelectedEvent = data.data.userMobileNumber,
+          this.CreatedOnOfSelectedEvent = data.data.createdOn,
+          this.CreatedByOfSelectedEvent = data.data.createdBy,
+          this.EventTitleOfSelectedEvent = data.data.eventTitle,
+          this.EventLocationOfSelectedEvent = data.data.eventLocation,
+          this.EventDescriptionOfSelectedEvent = data.data.eventDescription,
+          this.UserEmailOfSelectedEvent = data.data.userEmail,
+          this.StartTimeOfSelectedEvent = data.data.startTime,
+          this.EndTimeOfSelectedEvent = data.data.endTime,
+          //this.EventDurationOfSelectedEvent = data.data.EventDurationInHours,
+
+          //console.log("mobile number of selected user is :",this.MobileNumberOfSelectedEvent)
+          
+          this.toastr.successToastr('event details.', 'Success!');
+        },
+        error => {
+          this.toastr.errorToastr('No event found ', 'Oops!')
+        }
+
+      )
+    }
+
   }
 
   public logout: any = () => {
@@ -601,6 +711,31 @@ public dismissFunction=()=>{
 
 
 }
+
+public toCheckOwnNotification =(notificationObjArray)=>{
+
+  // for(let x in notificationObjArray)
+  // {
+  //   console.log("userInfoOfUser",this.userInfo.userName)
+  //  console.log("userInfoOfUserInNitificationObj",notificationObjArray[x].userName)
+  //   if(notificationObjArray[x].userName == this.userInfo.userName)
+  //  { 
+  //    alert(notificationObjArray[x].notifiation_messageOncreate);
+  //     this.toastr.successToastr(notificationObjArray[x].notifiation_messageOncreate)
+  //   }
+  // }
+
+  console.log("userInfoOfUser",this.userInfo.userName)
+   console.log("userInfoOfUserInNitificationObj",notificationObjArray.userName)
+    if(notificationObjArray.userName == this.userInfo.userName)
+   { 
+     alert(notificationObjArray.notifiation_message);
+      this.toastr.successToastr(notificationObjArray.notifiation_message)
+    }
+
+}
+
+
 
  ngOnDestroy(){
   clearInterval(this.emmissionFunction);

@@ -65,7 +65,7 @@ export class LoginComponent implements OnInit {
 
           if(this.userName.substr(this.userName.length - 5) === "admin"){
             console.log("you are admin"+ "userName :",this.userName);
-            this.router.navigate(['/admin-view']);
+            this.router.navigate(['/admin-dashboard']);
           }
           else{
             console.log("you are normal user"+ "userName :",this.userName);

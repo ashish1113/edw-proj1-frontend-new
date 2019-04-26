@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrManager } from 'ng6-toastr-notifications';
 import { AppService } from 'src/app/app.service';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
+import { SocketService } from 'src/app/socket.service';
 
 
 @Component({
@@ -12,7 +13,7 @@ import { Cookie } from 'ng2-cookies/ng2-cookies';
 })
 export class CreateEventComponent implements OnInit {
 
-  constructor(public appService: AppService,public toastr: ToastrManager, private _route: ActivatedRoute, private router: Router) { 
+  constructor(public appService: AppService,public toastr: ToastrManager, private _route: ActivatedRoute, private router: Router, public SocketService: SocketService,) { 
 
   }
 
@@ -65,7 +66,7 @@ export class CreateEventComponent implements OnInit {
         console.log("event created")
         console.log("create event response data: ",data);
         this.toastr.successToastr('event created.', 'Success!');
-
+        this.SocketService.toSendRequestToGetNotificationFromServer(this.email);
         setTimeout(()=>{
           this.router.navigate(['/admin-view']);
         },1000)

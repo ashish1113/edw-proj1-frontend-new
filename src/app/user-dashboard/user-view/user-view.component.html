@@ -264,8 +264,108 @@
 
 </div>
 
+<div class="modal fade" id="exampleModalScrollable" tabindex="-1" role="dialog"
+  aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalScrollableTitle">Events On {{viewDate}}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" style="background-color: Slategrey">
+        <ul class="list" *ngIf="noEvents == false">
+          <li class="p-2 typeOfEvents" style="color:white;font-size: 25px;">
+            <u>EventsList</u>
+          </li>
+          <li class="clearfix cursorPointer" (click)="eventSelectedByUser(event.eventId)"
+            *ngFor="let event of checkForEventsOnDateList">
+            <div class="userPresence" style="border-style: ridge;">
+              <ul style="list-style-type: square;">
+                <li>
+                  {{event.title}} ---- {{event.eventId}}
+
+                </li>
+              </ul>
+
+            </div>
+
+          </li>
+
+        </ul>
+        <p *ngIf="noEvents == true"> no events</p>
+
+      </div>
+
+
+      <div class="modal-footer">
+
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal"
+          (click)="EventDetail()">
+          View
+        </button>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">View-Event</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+        <ul class="list" *ngIf="noEvents == false">
+          <li class="p-2 typeOfEvents" style="color:white;font-size: 25px;">
+            <u>Event Details</u>
+          </li>
+          <li class="clearfix cursorPointer">
+
+
+            <div class="userPresence" style="border-style: ridge;">
+              <ul style="list-style-type: square;">
+
+                <li>userEmail: {{UserEmailOfSelectedEvent}}</li>
+                <li>eventId: {{EventIdOfSelectedEvent}}</li>
+                <li>eventTitle: {{EventTitleOfSelectedEvent}}</li>
+                <li>eventLocation: {{EventLocationOfSelectedEvent}}</li>
+                <li>eventDescription: {{EventDescriptionOfSelectedEvent}}</li>
+                <li>createdOn: {{CreatedOnOfSelectedEvent | date :'medium'}}</li>
+                <li>createdBy: {{CreatedByOfSelectedEvent}}</li>
+                <li>mobileNumber: {{MobileNumberOfSelectedEvent}}</li>
+                <li>startTime: {{StartTimeOfSelectedEvent | date :'medium'}}</li>
+                <li>endTime: {{EndTimeOfSelectedEvent | date :'medium'}}</li>
+
+              </ul>
+
+            </div>
+
+          </li>
+
+        </ul>
+        <p *ngIf="noEvents == true"> no events</p>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
 <!-- Modal for Notification -->
-<div class="modal fade" id="notificationModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="notificationModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -275,19 +375,19 @@
         </button>
       </div>
       <div class="modal-body">
-        
-          <ul style="border-style:ridge; list-style-type: square;">
-            <li>Event Details</li>
-          </ul>
 
-          <ul style="border-style:ridge; list-style-type: square; " >
-              <li>eventTitle : {{eventTitle}}</li>
-              <li>eventStartTime : {{startTime | date : 'medium'}}</li>
-              <li>eventLoation : {{placeOfEvent}}</li>
-              <li>eventId : {{eventId}}</li>
-            
-            
-            </ul>
+        <ul style="border-style:ridge; list-style-type: square;">
+          <li>Event Details</li>
+        </ul>
+
+        <ul style="border-style:ridge; list-style-type: square; ">
+          <li>eventTitle : {{eventTitle}}</li>
+          <li>eventStartTime : {{startTime | date : 'medium'}}</li>
+          <li>eventLoation : {{placeOfEvent}}</li>
+          <li>eventId : {{eventId}}</li>
+
+
+        </ul>
 
         <!-- {{eventTitle}}
         {{startTime}}
@@ -296,14 +396,16 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Dismiss</button>
-        <button type="button" class="btn btn-primary" (click)="toPushNotificationObjForSnooze()"data-dismiss="modal">Snooze</button>
+        <button type="button" class="btn btn-primary" (click)="toPushNotificationObjForSnooze()"
+          data-dismiss="modal">Snooze</button>
       </div>
     </div>
   </div>
 </div>
 
 <!-- Modal for Snoozed Notification -->
-<div class="modal fade" id="snoozedNotificationModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="snoozedNotificationModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -313,7 +415,7 @@
         </button>
       </div>
       <div class="modal-body">
-          <!-- <li *ngFor ="let notificationObj of snoozedNotificationList" >
+        <!-- <li *ngFor ="let notificationObj of snoozedNotificationList" >
 
 
 
@@ -323,30 +425,32 @@
          {{notificationObj.snoozedEventId}}
  
           </li> -->
-          <ul style="border-style:ridge; list-style-type: square;">
-            <li>Event Details</li>
-          </ul>
+        <ul style="border-style:ridge; list-style-type: square;">
+          <li>Event Details</li>
+        </ul>
 
-          <ul style="border-style:ridge; list-style-type: square; " *ngFor ="let notificationObj of snoozedNotificationList">
-            <li>eventTitle : {{notificationObj.snoozedEventTitle}}</li>
-            <li>eventStartTime : {{notificationObj.snoozedEventStartTime | date : 'medium'}}</li>
-            <li>eventLoation : {{notificationObj.snoozedEventPlace}}</li>
-            <li>eventId : {{notificationObj.snoozedEventId}}</li>
-          
-          
-          </ul>
+        <ul style="border-style:ridge; list-style-type: square; "
+          *ngFor="let notificationObj of snoozedNotificationList">
+          <li>eventTitle : {{notificationObj.snoozedEventTitle}}</li>
+          <li>eventStartTime : {{notificationObj.snoozedEventStartTime | date : 'medium'}}</li>
+          <li>eventLoation : {{notificationObj.snoozedEventPlace}}</li>
+          <li>eventId : {{notificationObj.snoozedEventId}}</li>
 
-         
-        
-         
 
-        
-        
+        </ul>
 
-        
+
+
+
+
+
+
+
+
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="dismissFunction()">Dismiss</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal"
+          (click)="dismissFunction()">Dismiss</button>
         <button type="button" class="btn btn-primary" data-dismiss="modal">Snooze</button>
       </div>
     </div>

@@ -24,14 +24,14 @@
             ],
             "styles": [
               "src/styles.css",
-              "/home/admin1/proj1/meeting-planner-frontend1/edw-proj1-frontend-new/node_modules/bootstrap/dist/css/bootstrap.min.css",
-              "/home/admin1/proj1/meeting-planner-frontend1/edw-proj1-frontend-new/node_modules/flatpickr/dist/flatpickr.css",
-              "/home/admin1/proj1/meeting-planner-frontend1/edw-proj1-frontend-new/node_modules/angular-calendar/css/angular-calendar.css",
-              "/home/admin1/proj1/meeting-planner-frontend1/edw-proj1-frontend-new/node_modules/font-awesome/css/font-awesome.css"
+              "/home/admin1/meeting-planner/edw-proj1-frontend-new/node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "/home/admin1/meeting-planner/edw-proj1-frontend-new/node_modules/flatpickr/dist/flatpickr.css",
+              "/home/admin1/meeting-planner/edw-proj1-frontend-new/node_modules/angular-calendar/css/angular-calendar.css",
+              "/home/admin1/meeting-planner/edw-proj1-frontend-new/node_modules/font-awesome/css/font-awesome.css"
             ],
             "scripts": [
-              "/home/admin1/proj1/meeting-planner-frontend1/edw-proj1-frontend-new/node_modules/jquery/dist/jquery.min.js",
-              "/home/admin1/proj1/meeting-planner-frontend1/edw-proj1-frontend-new/node_modules/bootstrap/dist/js/bootstrap.min.js"
+              "/home/admin1/meeting-planner/edw-proj1-frontend-new/node_modules/jquery/dist/jquery.min.js",
+              "/home/admin1/meeting-planner/edw-proj1-frontend-new/node_modules/bootstrap/dist/js/bootstrap.min.js"
             ]
           },
           "configurations": {
